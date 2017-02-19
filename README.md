@@ -1,2 +1,2 @@
 # domoticz-lua-scripts
-Somes lua script for home domoticz
+Some lua scripts for my home domoticz
