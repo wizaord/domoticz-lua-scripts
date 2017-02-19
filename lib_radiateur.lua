@@ -1,17 +1,21 @@
--- FUNCTION PERMETTANT dINTERAGIR AVEC LE RADIATEUR
+-- Some functions to handle the radiator
 --
 function sleep(n)
   os.execute("sleep " .. tonumber(n))
 end
 
+-- This function is used to start the radiator
 function startRadiateur ()
         os.execute ("ssh pi@192.168.1.8 'irsend SEND_ONCE HITACHIFORCE BTN_START'")
 end
 
+--This function is used to stop the radiator
 function stopRadiateur ()
         os.execute ("ssh pi@192.168.1.8 'irsend SEND_ONCE HITACHIFORCE KEY_STOP'")
 end
 
+-- This function is used to change the temperature configured in the radiator.
+-- If the radiator is turn off, it is started.
 function changeTemperature (temp)
 	localTemp = "KEY_F"..temp
 	if (temp == "25") then
