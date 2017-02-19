@@ -14,7 +14,7 @@ if (devicechanged[DEVICE_NAME]) then
 	--on regarde si le radiateur n'est pas en mode manuel
 	isModeManuel = otherdevices['RADIATEUR-MODE-MANUEL']
 	
-	if ( isModeManuel == "On") then
+    if ( isModeManuel == "On") then
 		print('Radiateur : mode manuel active. Thermostat ne marche pas')
 		return commandArray
 	end
@@ -52,6 +52,7 @@ if (devicechanged[DEVICE_NAME]) then
 				commandArray['Variable:RADIATEUR-SALON-LASTSEND'] = ''..newTemp
 				commandArray['Variable:RADIATEUR-SALON-STATUS'] = 'On'
 				commandArray['RADIATEUR-SALON'] = 'On'
+				commandArray['SendEmail']='[DOMOTICZ] RADIATEUR#Modification de status pour le radiateur salon : On#mouilleron.cedric@gmail.com'
 			end
 		else
 			-- radiateur is running
