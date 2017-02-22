@@ -1,17 +1,22 @@
 -- Some functions to handle the radiator
+-- ATTENTION, il faut s'assurer que les cles SSH ROOT sont echanges via la commande : /usr/bin/ssh-copy-id -i ~/.ssh/id_dsa.pub XX@192.168.X.X
 --
+
+
 function sleep(n)
   os.execute("sleep " .. tonumber(n))
 end
 
 -- This function is used to start the radiator
 function startRadiateur ()
-        os.execute ("ssh pi@192.168.1.8 'irsend SEND_ONCE HITACHIFORCE BTN_START'")
+    --print('demarrage du radiateur')
+    os.execute ('ssh ' .. SERVEUR_LOGIN .. '@' .. SERVEUR_IP.. ' \'irsend SEND_ONCE HITACHIFORCE BTN_START\'')
 end
 
 --This function is used to stop the radiator
 function stopRadiateur ()
-        os.execute ("ssh pi@192.168.1.8 'irsend SEND_ONCE HITACHIFORCE KEY_STOP'")
+    --print('executing : ssh ' .. SERVEUR_LOGIN .. '@' .. SERVEUR_IP.. ' \'irsend SEND_ONCE HITACHIFORCE KEY_STOP\'')
+    os.execute ('ssh ' .. SERVEUR_LOGIN .. '@' .. SERVEUR_IP.. ' \'irsend SEND_ONCE HITACHIFORCE KEY_STOP\'')
 end
 
 -- This function is used to change the temperature configured in the radiator.
@@ -35,7 +40,7 @@ function changeTemperature (temp)
 	end
 	
 	print ('Changement de la temperature a\' ' .. localTemp)
-	os.execute ('ssh pi@192.168.1.8 \'irsend SEND_ONCE HITACHIFORCE ' .. localTemp .. '\'')
+    os.execute ('ssh ' .. SERVEUR_LOGIN .. '@' .. SERVEUR_IP.. ' \'irsend SEND_ONCE HITACHIFORCE ' .. localTemp .. '\'')
 	
 	if ( isRadiateurRunning == "Off" ) then	
 		return 1

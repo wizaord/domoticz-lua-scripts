@@ -7,8 +7,8 @@ require("lib_radiateur")
 --
 -- variables definition
 --
-DEVICE_NAME = 'Thermostat-SALON'
-SERVEUR_IP = "192.168.1.8"
+DEVICE_NAME = 'Thermostat-COULOIR'
+SERVEUR_IP = "192.168.1.12"
 SERVEUR_LOGIN = "pi"
 
 commandArray = {}
@@ -25,16 +25,16 @@ if (devicechanged[DEVICE_NAME]) then
     newTemp = math.floor(tonumber(devicechanged[DEVICE_NAME]))
 
     -- on recupere la temperature du salon
-    salonTemp = tonumber(otherdevices_svalues['TH-SALON']:match("([^;]+);.*"))
+    couloirTemp = tonumber(otherdevices_svalues['TH-CHAMBREMATHIS']:match("([^;]+);.*"))
 
     -- on recupere la dernere temperature envoye
-    lastTempSend = tonumber(uservariables['RADIATEUR-SALON-LASTSEND'])
+    lastTempSend = tonumber(uservariables['RADIATEUR-COULOIR-LASTSEND'])
 
     -- on regarde si le radiateur est eteint ou non
-    isRadiateurRunning = otherdevices['RADIATEUR-SALON']
+    isRadiateurRunning = otherdevices['RADIATEUR-COULOIR']
 
-    print('Thermostat salon new temp : ' .. newTemp)
-    print('Temperature du salon      : ' .. salonTemp)
+    print('Thermostat couloir new temp : ' .. newTemp)
+    print('Temperature du couloir      : ' .. couloirTemp)
     print('Derniere temperature send : ' .. lastTempSend)
     print('Radiateur statut          : ' .. isRadiateurRunning)
 
@@ -49,17 +49,17 @@ if (devicechanged[DEVICE_NAME]) then
     else
         if (isRadiateurRunning == "Off") then
             -- radiateur is stopped
-            if (newTemp > salonTemp) then
+            if (newTemp > couloirTemp) then
                 changeTemperature(newTemp)
-                commandArray['Variable:RADIATEUR-SALON-LASTSEND'] = '' .. newTemp
-                commandArray['Variable:RADIATEUR-SALON-STATUS'] = 'On'
-                commandArray['RADIATEUR-SALON'] = 'On'
-                commandArray['SendEmail'] = '[DOMOTICZ] RADIATEUR#Modification de status pour le radiateur salon : On#mouilleron.cedric@gmail.com'
+                commandArray['Variable:RADIATEUR-COULOIR-LASTSEND'] = '' .. newTemp
+                commandArray['Variable:RADIATEUR-COULOIR-STATUS'] = 'On'
+                commandArray['RADIATEUR-COULOIR'] = 'On'
+                commandArray['SendEmail'] = '[DOMOTICZ] RADIATEUR#Modification de status pour le radiateur couloir : On#mouilleron.cedric@gmail.com'
             end
         else
             -- radiateur is running
             changeTemperature(newTemp)
-            commandArray['Variable:RADIATEUR-SALON-LASTSEND'] = '' .. newTemp
+            commandArray['Variable:RADIATEUR-COULOIR-LASTSEND'] = '' .. newTemp
         end
     end
 end

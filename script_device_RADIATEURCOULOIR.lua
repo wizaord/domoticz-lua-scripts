@@ -8,15 +8,15 @@ require("lib_radiateur")
 --
 -- variables definition
 --
-DEVICE_NAME = 'RADIATEUR-SALON'
+DEVICE_NAME = 'RADIATEUR-COULOIR'
 
-SERVEUR_IP = "192.168.1.8"
+SERVEUR_IP = "192.168.1.12"
 SERVEUR_LOGIN = "pi"
 
 commandArray = {}
 if (devicechanged[DEVICE_NAME]) then
     -- on recupere le status courant. Le radiateur peut etre eteint par le thermostat
-    radiateurStatus = uservariables['RADIATEUR-SALON-STATUS']
+    radiateurStatus = uservariables['RADIATEUR-COULOIR-STATUS']
 
     --on determine si on allume ou on eteint le radiateur
     status = devicechanged[DEVICE_NAME]
@@ -24,13 +24,13 @@ if (devicechanged[DEVICE_NAME]) then
     if (status == radiateurStatus) then
         print('Le status est le eme, on ne fait rien')
     else
-        commandArray['SendEmail'] = '[DOMOTICZ] RADIATEUR#Modification de status pour le radiateur salon : ' .. status .. '#mouilleron.cedric@gmail.com'
+        commandArray['SendEmail'] = '[DOMOTICZ] RADIATEUR#Modification de status pour le radiateur couloir : ' .. status .. '#mouilleron.cedric@gmail.com'
         if (status == 'On') then
             startRadiateur()
-            commandArray['Variable:RADIATEUR-SALON-STATUS'] = 'On'
+            commandArray['Variable:RADIATEUR-COULOIR-STATUS'] = 'On'
         else
             stopRadiateur()
-            commandArray['Variable:RADIATEUR-SALON-STATUS'] = 'Off'
+            commandArray['Variable:RADIATEUR-COULOIR-STATUS'] = 'Off'
         end
     end
 end
