@@ -23,11 +23,11 @@ end
 -- If the radiator is turn off, it is started.
 function changeTemperature (temp)
 	localTemp = "KEY_F"..temp
-	if (temp == "25") then
+	if (temp == 25) then
 		localTemp = "KEY_F1"
 	end
 
-	if (temp == "26") then
+	if (temp == 26) then
 		localTemp = "KEY_F2"
 	end
 
