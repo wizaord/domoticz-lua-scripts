@@ -50,7 +50,7 @@ if (devicechanged[DEVICE_NAME]) then
         if (isRadiateurRunning == "Off") then
             -- radiateur is stopped
             if (newTemp > couloirTemp) then
-                changeTemperature(newTemp)
+                changeTemperature(newTemp + 3)
                 commandArray['Variable:RADIATEUR-COULOIR-LASTSEND'] = '' .. newTemp
                 commandArray['Variable:RADIATEUR-COULOIR-STATUS'] = 'On'
                 commandArray['RADIATEUR-COULOIR'] = 'On'
