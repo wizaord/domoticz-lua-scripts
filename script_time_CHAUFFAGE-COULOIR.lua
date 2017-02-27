@@ -49,7 +49,7 @@ print ('Temperature voulu : ' .. temperatureThermostat .. '  -- Temperature en c
 
 if ( temperatureCouloir <= temperatureThermostat and isRadiateurRunning == 'Off') then
 	--on redemarre le radiateura la temperature voulu
-    changeTemperature(temperatureThermostat)
+    changeTemperature(temperatureThermostat + 3)
     commandArray['Variable:RADIATEUR-COULOIR-LASTSEND'] = ''..temperatureThermostat
     commandArray['Variable:RADIATEUR-COULOIR-STATUS'] = 'On'
     commandArray['RADIATEUR-COULOIR'] = 'On'
