@@ -3,15 +3,13 @@
 -- Il faut passer par le RPI pour ealiser l'action
 --
 package.path = package.path .. ';' .. '/home/pi/domoticz/scripts/lua/?.lua'
+require("lib_conf")
 require("lib_radiateur")
 
 --
 -- variables definition
 --
 DEVICE_NAME = 'RADIATEUR-COULOIR'
-
-SERVEUR_IP = "192.168.1.12"
-SERVEUR_LOGIN = "pi"
 
 commandArray = {}
 if (devicechanged[DEVICE_NAME]) then
@@ -24,12 +22,11 @@ if (devicechanged[DEVICE_NAME]) then
     if (status == radiateurStatus) then
         print('Le status est le eme, on ne fait rien')
     else
-        commandArray['SendEmail'] = '[DOMOTICZ] RADIATEUR#Modification de status pour le radiateur couloir : ' .. status .. '#mouilleron.cedric@gmail.com'
         if (status == 'On') then
-            startRadiateur()
+            startRadiateur(PI_COULOIR_SERVEUR_LOGIN, PI_COULOIR_SERVEUR_IP)
             commandArray['Variable:RADIATEUR-COULOIR-STATUS'] = 'On'
         else
-            stopRadiateur()
+            stopRadiateur(PI_COULOIR_SERVEUR_LOGIN, PI_COULOIR_SERVEUR_IP)
             commandArray['Variable:RADIATEUR-COULOIR-STATUS'] = 'Off'
         end
     end

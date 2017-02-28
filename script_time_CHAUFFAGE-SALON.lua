@@ -4,10 +4,7 @@
 
 package.path = package.path .. ';' .. '/home/pi/domoticz/scripts/lua/?.lua'
 require("lib_radiateur")
-
-
-SERVEUR_IP = "192.168.1.8"
-SERVEUR_LOGIN = "pi"
+require("lib_conf")
 
 currentTime = os.time()
 currentDate = os.date("*t", currentTime)
@@ -45,15 +42,14 @@ if ( temperatureSalon > (temperatureThermostat + 1.4) and isRadiateurRunning == 
 	commandArray['RADIATEUR-SALON'] = 'Off'
 end
 
-print ('Temperature voulu : ' .. temperatureThermostat .. '  -- Temperature en cours : ' .. temperatureSalon)
+print ('SALON : Temperature voulu : ' .. temperatureThermostat .. '  -- Temperature en cours : ' .. temperatureSalon)
 
 if ( temperatureSalon <= temperatureThermostat and isRadiateurRunning == 'Off') then
 	--on redemarre le radiateura la temperature voulu
-    changeTemperature(temperatureThermostat)
+    changeTemperature(PI_SALON_SERVEUR_LOGIN, PI_SALON_SERVEUR_IP, temperatureThermostat)
     commandArray['Variable:RADIATEUR-SALON-LASTSEND'] = ''..temperatureThermostat
     commandArray['Variable:RADIATEUR-SALON-STATUS'] = 'On'
     commandArray['RADIATEUR-SALON'] = 'On'
-    commandArray['SendEmail'] = '[DOMOTICZ] RADIATEUR#Modification de status pour le radiateur salon : On#mouilleron.cedric@gmail.com'
 end
 
 return commandArray

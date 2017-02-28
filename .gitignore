@@ -3,3 +3,4 @@
 .idea
 domoticz-lua-scripts.iml
 
+/lib_conf.lua

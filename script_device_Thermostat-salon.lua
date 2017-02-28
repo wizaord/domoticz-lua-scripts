@@ -3,13 +3,12 @@
 --
 package.path = package.path .. ';' .. '/home/pi/domoticz/scripts/lua/?.lua'
 require("lib_radiateur")
+require("lib_conf")
 
 --
 -- variables definition
 --
 DEVICE_NAME = 'Thermostat-SALON'
-SERVEUR_IP = "192.168.1.8"
-SERVEUR_LOGIN = "pi"
 
 commandArray = {}
 if (devicechanged[DEVICE_NAME]) then
@@ -17,7 +16,7 @@ if (devicechanged[DEVICE_NAME]) then
     isModeManuel = otherdevices['RADIATEUR-MODE-MANUEL']
 
     if (isModeManuel == "On") then
-        print('Radiateur : mode manuel active. Thermostat ne marche pas')
+        print('SALON : Radiateur : mode manuel active. Thermostat ne marche pas')
         return commandArray
     end
 
@@ -33,10 +32,10 @@ if (devicechanged[DEVICE_NAME]) then
     -- on regarde si le radiateur est eteint ou non
     isRadiateurRunning = otherdevices['RADIATEUR-SALON']
 
-    print('Thermostat salon new temp : ' .. newTemp)
-    print('Temperature du salon      : ' .. salonTemp)
-    print('Derniere temperature send : ' .. lastTempSend)
-    print('Radiateur statut          : ' .. isRadiateurRunning)
+    print('SALON : Thermostat salon new temp : ' .. newTemp)
+    print('SALON : Temperature du salon      : ' .. salonTemp)
+    print('SALON : Derniere temperature send : ' .. lastTempSend)
+    print('SALON : Radiateur statut          : ' .. isRadiateurRunning)
 
     -- si la derniere commande envoye est la eme, on ne fait rien
     -- si le radiateur est eteint et la temperature > thermostat => on ne fait rien
@@ -50,15 +49,14 @@ if (devicechanged[DEVICE_NAME]) then
         if (isRadiateurRunning == "Off") then
             -- radiateur is stopped
             if (newTemp > salonTemp) then
-                changeTemperature(newTemp)
+                changeTemperature(PI_SALON_SERVEUR_LOGIN, PI_SALON_SERVEUR_IP, newTemp)
                 commandArray['Variable:RADIATEUR-SALON-LASTSEND'] = '' .. newTemp
                 commandArray['Variable:RADIATEUR-SALON-STATUS'] = 'On'
                 commandArray['RADIATEUR-SALON'] = 'On'
-                commandArray['SendEmail'] = '[DOMOTICZ] RADIATEUR#Modification de status pour le radiateur salon : On#mouilleron.cedric@gmail.com'
             end
         else
             -- radiateur is running
-            changeTemperature(newTemp)
+            changeTemperature(PI_SALON_SERVEUR_LOGIN, PI_SALON_SERVEUR_IP, newTemp)
             commandArray['Variable:RADIATEUR-SALON-LASTSEND'] = '' .. newTemp
         end
     end

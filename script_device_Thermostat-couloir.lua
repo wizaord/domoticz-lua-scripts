@@ -3,13 +3,12 @@
 --
 package.path = package.path .. ';' .. '/home/pi/domoticz/scripts/lua/?.lua'
 require("lib_radiateur")
+require("lib_conf")
 
 --
 -- variables definition
 --
 DEVICE_NAME = 'Thermostat-COULOIR'
-SERVEUR_IP = "192.168.1.12"
-SERVEUR_LOGIN = "pi"
 
 commandArray = {}
 if (devicechanged[DEVICE_NAME]) then
@@ -17,7 +16,7 @@ if (devicechanged[DEVICE_NAME]) then
     isModeManuel = otherdevices['RADIATEUR-MODE-MANUEL']
 
     if (isModeManuel == "On") then
-        print('Radiateur : mode manuel active. Thermostat ne marche pas')
+        print('COULOIR : Radiateur : mode manuel active. Thermostat ne marche pas')
         return commandArray
     end
 
@@ -33,10 +32,10 @@ if (devicechanged[DEVICE_NAME]) then
     -- on regarde si le radiateur est eteint ou non
     isRadiateurRunning = otherdevices['RADIATEUR-COULOIR']
 
-    print('Thermostat couloir new temp : ' .. newTemp)
-    print('Temperature du couloir      : ' .. couloirTemp)
-    print('Derniere temperature send : ' .. lastTempSend)
-    print('Radiateur statut          : ' .. isRadiateurRunning)
+    print('COULOIR : Thermostat couloir new temp : ' .. newTemp)
+    print('COULOIR : Temperature du couloir      : ' .. couloirTemp)
+    print('COULOIR : Derniere temperature send : ' .. lastTempSend)
+    print('COULOIR : Radiateur statut          : ' .. isRadiateurRunning)
 
     -- si la derniere commande envoye est la eme, on ne fait rien
     -- si le radiateur est eteint et la temperature > thermostat => on ne fait rien
@@ -50,15 +49,14 @@ if (devicechanged[DEVICE_NAME]) then
         if (isRadiateurRunning == "Off") then
             -- radiateur is stopped
             if (newTemp > couloirTemp) then
-                changeTemperature(newTemp + 3)
+                changeTemperature(PI_COULOIR_SERVEUR_LOGIN, PI_COULOIR_SERVEUR_IP, newTemp + 2)
                 commandArray['Variable:RADIATEUR-COULOIR-LASTSEND'] = '' .. newTemp
                 commandArray['Variable:RADIATEUR-COULOIR-STATUS'] = 'On'
                 commandArray['RADIATEUR-COULOIR'] = 'On'
-                commandArray['SendEmail'] = '[DOMOTICZ] RADIATEUR#Modification de status pour le radiateur couloir : On#mouilleron.cedric@gmail.com'
             end
         else
             -- radiateur is running
-            changeTemperature(newTemp)
+            changeTemperature(PI_COULOIR_SERVEUR_LOGIN, PI_COULOIR_SERVEUR_IP, newTemp + 2)
             commandArray['Variable:RADIATEUR-COULOIR-LASTSEND'] = '' .. newTemp
         end
     end
