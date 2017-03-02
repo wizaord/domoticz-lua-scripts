@@ -1,5 +1,5 @@
 # domoticz-lua-scripts
-Some lua scripts for my home domoticz
+Some lua scripts for my home domoticz solution
 
 # Libraries
 ## lib_radiateur
