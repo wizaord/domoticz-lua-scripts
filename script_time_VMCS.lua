@@ -38,7 +38,7 @@ if (otherdevices['VMC-ALL'] == 'Off' and difference > 21600) then
     -- on regarde si c est la nuit
     if (isNigth(hour) == 1) then
         --on va erifier la temperature de dehors
-        outTemperature, outHumidity = otherdevices_svalues["OWM_THB"]:match("([^;]+);([^;]+)")
+        outTemperature, outHumidity = otherdevices_svalues["WU_Temp"]:match("([^;]+);([^;]+)")
         if (tonumber(outTemperature) > 5) then
             commandArray['Group:VMCs'] = 'On FOR 30'
         end
