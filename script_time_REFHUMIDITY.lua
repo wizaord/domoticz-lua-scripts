@@ -20,7 +20,8 @@ if (currentDate.hour == 5 and currentDate.min == 10) then
     --get the humidity value from SDB humidity sensor
     sdbTemperature, sdbHumidity = otherdevices_svalues["TH-SALLEDEBAIN"]:match("([^;]+);([^;]+)")
     if (sdbHumidity == nil or sdbHumidity == '') then
-        commandArray['SendEmail'] = '[DOMOTICZ] HUMIDITY REF#Erreur de recuperation. Set default value a 50#' .. MAIL_ADRESS
+        local emailAddress = uservariables['email_address']
+        commandArray['SendEmail'] = '[DOMOTICZ] HUMIDITY REF#Erreur de recuperation. Set default value a 50#' .. emailAddress
         sdbHumidity = 50
     end
     commandArray['Variable:HUMIDITY_REF'] = sdbHumidity

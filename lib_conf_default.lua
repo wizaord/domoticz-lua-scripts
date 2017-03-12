@@ -6,9 +6,6 @@
 -- To change this template use File | Settings | File Templates.
 --
 
--- Mail configuration
-MAIL_ADRESS = TO_BE_DEFINED
-
 PI_COULOIR_SERVEUR_IP = TO_BE_DEFINED
 PI_COULOIR_SERVEUR_LOGIN = TO_BE_DEFINED
 

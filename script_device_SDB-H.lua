@@ -35,7 +35,10 @@ if (devicechanged[DEVICE_NAME]) then
     if (vmcStatus == "Off" and tonumber(sdbHumidity) >= seuilDeDeclenchement) then
         print("Allumage de la VMC pour 30 minutes")
         commandArray['Group:VMCs'] = 'On FOR 30'
---        commandArray['SendEmail'] = '[DOMOTICZ] ALLUMAGE VMC#Allumage de la VMC#' .. MAIL_ADRESS
+
+        -- send email
+        local emailAddress = uservariables['email_address']
+--        commandArray['SendEmail'] = '[DOMOTICZ] ALLUMAGE VMC#Allumage de la VMC#' .. emailAddress
     end
 end
 return commandArray
