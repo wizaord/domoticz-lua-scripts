@@ -46,7 +46,7 @@ print ('COULOIR : Temperature voulu : ' .. temperatureThermostat .. '  -- Temper
 
 if ( temperatureCouloir <= temperatureThermostat and isRadiateurRunning == 'Off') then
 	--on redemarre le radiateura la temperature voulu
-    changeTemperature(PI_COULOIR_SERVEUR_LOGIN, PI_COULOIR_SERVEUR_IP, temperatureThermostat + 2)
+    changeTemperature('RADIATEUR-COULOIR', PI_COULOIR_SERVEUR_LOGIN, PI_COULOIR_SERVEUR_IP, temperatureThermostat + 2)
     commandArray['Variable:RADIATEUR-COULOIR-LASTSEND'] = ''..temperatureThermostat
     commandArray['Variable:RADIATEUR-COULOIR-STATUS'] = 'On'
     commandArray['RADIATEUR-COULOIR'] = 'On'

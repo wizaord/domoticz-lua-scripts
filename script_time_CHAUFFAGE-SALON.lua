@@ -46,7 +46,7 @@ print ('SALON : Temperature voulu : ' .. temperatureThermostat .. '  -- Temperat
 
 if ( temperatureSalon <= temperatureThermostat and isRadiateurRunning == 'Off') then
 	--on redemarre le radiateura la temperature voulu
-    changeTemperature(PI_SALON_SERVEUR_LOGIN, PI_SALON_SERVEUR_IP, temperatureThermostat)
+    changeTemperature('RADIATEUR-SALON', PI_SALON_SERVEUR_LOGIN, PI_SALON_SERVEUR_IP, temperatureThermostat)
     commandArray['Variable:RADIATEUR-SALON-LASTSEND'] = ''..temperatureThermostat
     commandArray['Variable:RADIATEUR-SALON-STATUS'] = 'On'
     commandArray['RADIATEUR-SALON'] = 'On'

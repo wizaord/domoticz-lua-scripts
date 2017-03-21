@@ -9,19 +9,19 @@ end
 -- This function is used to start the radiator
 function startRadiateur(SERVEUR_LOGIN, SERVEUR_IP)
     --print('demarrage du radiateur')
-    print('Executing ' .. 'ssh ' .. SERVEUR_LOGIN .. '@' .. SERVEUR_IP .. ' \'irsend SEND_ONCE HITACHIFORCE BTN_START\'')
+    --print('Executing ' .. 'ssh ' .. SERVEUR_LOGIN .. '@' .. SERVEUR_IP .. ' \'irsend SEND_ONCE HITACHIFORCE BTN_START\'')
     os.execute('ssh ' .. SERVEUR_LOGIN .. '@' .. SERVEUR_IP .. ' \'irsend SEND_ONCE HITACHIFORCE BTN_START\'')
 end
 
 --This function is used to stop the radiator
 function stopRadiateur(SERVEUR_LOGIN, SERVEUR_IP)
-    print('executing : ssh ' .. SERVEUR_LOGIN .. '@' .. SERVEUR_IP.. ' \'irsend SEND_ONCE HITACHIFORCE KEY_STOP\'')
+    --print('executing : ssh ' .. SERVEUR_LOGIN .. '@' .. SERVEUR_IP.. ' \'irsend SEND_ONCE HITACHIFORCE KEY_STOP\'')
     os.execute('ssh ' .. SERVEUR_LOGIN .. '@' .. SERVEUR_IP .. ' \'irsend SEND_ONCE HITACHIFORCE KEY_STOP\'')
 end
 
 -- This function is used to change the temperature configured in the radiator.
 -- If the radiator is turn off, it is started.
-function changeTemperature(SERVEUR_LOGIN, SERVEUR_IP, newTemperature)
+function changeTemperature(RADIATEUR_NAME, SERVEUR_LOGIN, SERVEUR_IP, newTemperature)
     local localTemp = ""
     if (newTemperature == 25) then
         localTemp = "KEY_F1"
@@ -32,7 +32,7 @@ function changeTemperature(SERVEUR_LOGIN, SERVEUR_IP, newTemperature)
     end
 
     -- si le radiateur est eteint, on le reallume avant
-    local isRadiateurRunning = otherdevices['RADIATEUR-SALON']
+    local isRadiateurRunning = otherdevices[RADIATEUR_NAME]
     if (isRadiateurRunning == "Off") then
         startRadiateur(SERVEUR_LOGIN, SERVEUR_IP)
         sleep(10)
@@ -40,10 +40,4 @@ function changeTemperature(SERVEUR_LOGIN, SERVEUR_IP, newTemperature)
 
     print('Changement de la temperature a\' ' .. localTemp .. ' sur ' .. SERVEUR_LOGIN .. ':' .. SERVEUR_IP)
     os.execute('ssh ' .. SERVEUR_LOGIN .. '@' .. SERVEUR_IP .. ' \'irsend SEND_ONCE HITACHIFORCE ' .. localTemp .. '\'')
-
-    if (isRadiateurRunning == "Off") then
-        return 1
-    else
-        return 0
-    end
 end
