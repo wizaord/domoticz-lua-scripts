@@ -14,15 +14,15 @@ DEVICE_NAME = 'RADIATEUR-COULOIR'
 commandArray = {}
 if (devicechanged[DEVICE_NAME]) then
     -- on recupere le status courant. Le radiateur peut etre eteint par le thermostat
-    radiateurStatus = uservariables['RADIATEUR-COULOIR-STATUS']
+    currentRadiateurStatus = uservariables['RADIATEUR-COULOIR-STATUS']
 
     --on determine si on allume ou on eteint le radiateur
-    status = devicechanged[DEVICE_NAME]
+    newRadiateurStatus = devicechanged[DEVICE_NAME]
 
-    if (status == radiateurStatus) then
-        print('Le status est le eme, on ne fait rien')
+    if (newRadiateurStatus == currentRadiateurStatus) then
+        print('Le status est le meme, on ne fait rien')
     else
-        if (status == 'On') then
+        if (newRadiateurStatus == 'On') then
             startRadiateur(PI_COULOIR_SERVEUR_LOGIN, PI_COULOIR_SERVEUR_IP)
             commandArray['Variable:RADIATEUR-COULOIR-STATUS'] = 'On'
         else
