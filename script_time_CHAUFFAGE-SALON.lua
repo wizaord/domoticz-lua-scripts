@@ -6,8 +6,9 @@ package.path = package.path .. ';' .. '/home/pi/domoticz/scripts/lua/?.lua'
 require("lib_radiateur")
 require("lib_conf")
 
-currentTime = os.time()
-currentDate = os.date("*t", currentTime)
+local currentTime = os.time()
+local currentDate = os.date("*t", currentTime)
+local currentDay = os.date("*t").wday;
 
 -- 
 -- FUNCTION
@@ -16,38 +17,54 @@ currentDate = os.date("*t", currentTime)
 -- 
 -- MAIN
 --
+
+commandArray = {}
+
+runningMode = getRadiatorMode(tonumber(otherdevices_svalues['RADIATEUR-MODE']))
+print('SALON : Mode de fonctionnement : ' .. runningMode);
+if (runningMode == "OFF" or runningMode == "MANUEL") then
+    --mode manuel, on ne fait rien
+    print('Radiateur : Mode OFF ou MANUEL ACTIVE. Do nothing')
+    return commandArray
+end
+
+temperatureVoulue = tonumber('16');
+
+if (runningMode == "WEEKEND_OFF") then
+    if (isWeekendOffMode()) then
+        temperatureVoulue = tonumber('16');
+    else
+        runningMode = "AUTO"
+    end
+end
+if (runningMode == "HORSGEL") then
+    temperatureVoulue = tonumber('10');
+end
+if (runningMode == "AUTO") then
+    temperatureVoulue = tonumber(otherdevices['Thermostat-SALON'])
+end
+
+
 -- Recuperation de la temperature du salon
 temperatureSalon = tonumber(otherdevices_svalues['TH-SALON']:match("([^;]+);.*"))
-temperatureThermostat = tonumber(otherdevices['Thermostat-SALON'])
-
-isModeManuel = otherdevices['RADIATEUR-MODE-MANUEL']
-
 -- on regarde si le radiateur est eteint ou non
 isRadiateurRunning = otherdevices['RADIATEUR-SALON']
 
 -- algo mis en place
 -- si la temperature du salon est > de 2 dege on coupe la VMC
 -- si la temperature redevient au la temperature voulu et que le radiateur est coupe, on le redemarre
+print('SALON : Temperature voulu : ' .. temperatureVoulue .. '  -- Temperature en cours : ' .. temperatureSalon)
 
-commandArray = {}
-
--- si on est en mode manuel, on ne fait rien
-if ( isModeManuel == "On") then
-      print('Radiateur : mode manuel active. Thermostat time ne marche pas')
-      return commandArray
+if (temperatureSalon > (temperatureVoulue + 1.4) and isRadiateurRunning == 'On') then
+    -- on coupe le radiateur
+    print('SALON : Arret du radiateur')
+    commandArray['RADIATEUR-SALON'] = 'Off'
 end
 
-if ( temperatureSalon > (temperatureThermostat + 1.4) and isRadiateurRunning == 'On') then
-	-- on coupe le radiateur
-	commandArray['RADIATEUR-SALON'] = 'Off'
-end
-
-print ('SALON : Temperature voulu : ' .. temperatureThermostat .. '  -- Temperature en cours : ' .. temperatureSalon)
-
-if ( temperatureSalon <= temperatureThermostat and isRadiateurRunning == 'Off') then
-	--on redemarre le radiateura la temperature voulu
-    changeTemperature('RADIATEUR-SALON', PI_SALON_SERVEUR_LOGIN, PI_SALON_SERVEUR_IP, temperatureThermostat)
-    commandArray['Variable:RADIATEUR-SALON-LASTSEND'] = ''..temperatureThermostat
+if (temperatureSalon <= temperatureVoulue and isRadiateurRunning == 'Off') then
+    --on redemarre le radiateura la temperature voulu
+    changeTemperature('RADIATEUR-SALON', PI_SALON_SERVEUR_LOGIN, PI_SALON_SERVEUR_IP, temperatureVoulue)
+    commandArray['Variable:RADIATEUR-SALON-LASTSEND'] = '' .. temperatureVoulue
     commandArray['Variable:RADIATEUR-SALON-STATUS'] = 'On'
     commandArray['RADIATEUR-SALON'] = 'On'
 end

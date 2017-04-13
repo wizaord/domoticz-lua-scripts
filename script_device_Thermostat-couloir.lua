@@ -13,10 +13,11 @@ DEVICE_NAME = 'Thermostat-COULOIR'
 commandArray = {}
 if (devicechanged[DEVICE_NAME]) then
     --on regarde si le radiateur n'est pas en mode manuel
-    isModeManuel = otherdevices['RADIATEUR-MODE-MANUEL']
-
-    if (isModeManuel == "On") then
-        print('COULOIR : Radiateur : mode manuel active. Thermostat ne marche pas')
+    runningMode = getRadiatorMode(tonumber(otherdevices_svalues['RADIATEUR-MODE']))
+    print('THERMOSTAT COULOIR : Mode de fonctionnement : ' .. runningMode);
+    if (runningMode == "OFF" or runningMode == "MANUEL") then
+        --mode manuel, on ne fait rien
+        print('Mode OFF ou MANUEL ACTIVE. Do nothing')
         return commandArray
     end
 
