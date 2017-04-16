@@ -67,11 +67,11 @@ function isWeekendOffMode()
     local currentDay = os.date("*t").wday;
     print('currentDay => ' .. currentDay .. ' currentHour => ' .. currentHour)
     -- 1 is Sunday
-    if (currentDay == 6) then return true end
+    if (currentDay == 7) then return true end
     if (currentDay == 1) then
         -- it's sunday. Weekend mode only if hour is less than 1pm
         if (currentHour < 13) then return true end
-    elseif currentDay == 7   then
+    elseif currentDay == 6   then
         -- it's friday
         if (currentHour > 14) then return true end
     end
