@@ -21,6 +21,13 @@ if (devicechanged[DEVICE_NAME]) then
         return commandArray
     end
 
+    if (runningMode == "WEEKEND_OFF") then
+        if (isWeekendOffMode()) then
+            print('Mode WEEKEND . Do nothing')
+            return commandArray
+        end
+    end
+
     --on determine si on allume ou on eteint le radiateur
     newTemp = math.floor(tonumber(devicechanged[DEVICE_NAME]))
 
