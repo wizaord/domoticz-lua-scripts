@@ -5,19 +5,21 @@
 -- La VMC n est pas allume la nuit pour garder la chaleur
 --
 
--- Cette fonction retourne 1 si l heure passe en parametre fait partie de la nuit
-function isNigth(hour)
-    intHour = tonumber(hour)
-    print('hour ' .. intHour)
-    if (intHour < 10 or intHour > 21) then
-        return 1
-    end
-    return 0
-end
+package.path = package.path .. ';' .. '/home/pi/domoticz/scripts/lua/?.lua'
+require("lib_vmc")
 
+commandArray = {}
 
 currentTime = os.time()
 currentDate = os.date("*t", currentTime)
+
+runningMode = getVmcMode(tonumber(otherdevices_svalues['VMC-MODE']))
+print('VMC : Mode de fonctionnement : ' .. runningMode);
+if (runningMode == "OFF" or runningMode == "MANUEL") then
+    --mode manuel, on ne fait rien
+    print('VMC : Mode OFF ou MANUEL ACTIVE. Do nothing')
+    return commandArray
+end
 
 lastChangedVMCStatus = otherdevices_lastupdate['VMC-ALL']
 
@@ -30,8 +32,6 @@ seconds = string.sub(lastChangedVMCStatus, 18, 19)
 
 t2 = os.time { year = year, month = month, day = day, hour = hour, min = minutes, sec = seconds }
 difference = (os.difftime(currentTime, t2))
-
-commandArray = {}
 
 if (otherdevices['VMC-ALL'] == 'Off' and difference > 21600) then
 
