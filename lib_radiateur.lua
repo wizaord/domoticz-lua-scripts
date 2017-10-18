@@ -55,6 +55,7 @@ function getRadiatorMode(SELECTEUR_VALUE)
     elseif v == 20 then return "WEEKEND_OFF"
     elseif v == 30 then return "MANUEL"
     elseif v == 40 then return "HORSGEL"
+    elseif v == 50 then return "FORCE16"
     else return "ERROR"
     end
 end

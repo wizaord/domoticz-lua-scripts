@@ -40,6 +40,9 @@ end
 if (runningMode == "HORSGEL") then
     temperatureVoulue = tonumber('10');
 end
+if (runningMode == "FORCE16") then
+    temperatureVoulue = tonumber('16');
+end
 if (runningMode == "AUTO") then
     temperatureVoulue = tonumber(otherdevices['Thermostat-SALON'])
 end
