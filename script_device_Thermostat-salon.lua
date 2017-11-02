@@ -40,6 +40,12 @@ if (devicechanged[DEVICE_NAME]) then
     -- on regarde si le radiateur est eteint ou non
     isRadiateurRunning = otherdevices['RADIATEUR-SALON']
 
+    -- si on est en mode FORCE16, on force la temperature a 16 degre
+    if (runningMode == "FORCE16") then
+        print('SALON : FORCE16 activé')
+        newTemp = tonumber('16');
+    end
+
     print('SALON : Thermostat salon new temp : ' .. newTemp)
     print('SALON : Temperature du salon      : ' .. salonTemp)
     print('SALON : Derniere temperature send : ' .. lastTempSend)

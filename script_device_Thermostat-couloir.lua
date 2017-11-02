@@ -12,7 +12,7 @@ DEVICE_NAME = 'Thermostat-COULOIR'
 
 commandArray = {}
 if (devicechanged[DEVICE_NAME]) then
-    --on regarde si le radiateur n'est pas en mode manuel
+    -- on regarde si le radiateur n'est pas en mode manuel
     runningMode = getRadiatorMode(tonumber(otherdevices_svalues['RADIATEUR-MODE']))
     print('THERMOSTAT COULOIR : Mode de fonctionnement : ' .. runningMode);
     if (runningMode == "OFF" or runningMode == "MANUEL") then
@@ -21,6 +21,7 @@ if (devicechanged[DEVICE_NAME]) then
         return commandArray
     end
 
+    -- si c'est le weekend ou mode forcé, on ne realise aucune action
     if (runningMode == "WEEKEND_OFF") then
         if (isWeekendOffMode()) then
             print('Mode WEEKEND . Do nothing')
@@ -28,17 +29,23 @@ if (devicechanged[DEVICE_NAME]) then
         end
     end
 
-    --on determine si on allume ou on eteint le radiateur
+    -- on recupere la temperature du thermostat
     newTemp = math.floor(tonumber(devicechanged[DEVICE_NAME]))
 
     -- on recupere la temperature du salon
     couloirTemp = tonumber(otherdevices_svalues['TH-CHAMBREMATHIS']:match("([^;]+);.*"))
 
-    -- on recupere la dernere temperature envoye
+    -- on recupere la derniere temperature envoye
     lastTempSend = tonumber(uservariables['RADIATEUR-COULOIR-LASTSEND'])
 
     -- on regarde si le radiateur est eteint ou non
     isRadiateurRunning = otherdevices['RADIATEUR-COULOIR']
+
+    -- si on est en mode FORCE16, on force la temperature a 16 degre
+    if (runningMode == "FORCE16") then
+        print('COULOIR : FORCE16 activé')
+        newTemp = tonumber('16');
+    end
 
     print('COULOIR : Thermostat couloir new temp : ' .. newTemp)
     print('COULOIR : Temperature du couloir      : ' .. couloirTemp)
