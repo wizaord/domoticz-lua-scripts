@@ -1,9 +1,9 @@
 --
 -- Ce script va s'executer la nuit a 5h30
 -- Ce script va aller rechercher le taux d'humidite dans la Salle de bain
--- Ce taux d'humidite va alors devenir le taux de reference pour la jouree
+-- Ce taux d'humidite va alors devenir le taux de reference pour la journee
 -- Ce taux de reference est utilise pour detecter si quelqu'un a pris un douche ou non
--- En effet le taux d'humidite varie en fonction de l'anee. Ce script permet de paliera cette fluluctuation.
+-- En effet le taux d'humidite varie en fonction de l'annee. Ce script permet de palier a cette fluctuation.
 --
 package.path = package.path .. ';' .. '/home/pi/domoticz/scripts/lua/?.lua'
 require("lib_conf")

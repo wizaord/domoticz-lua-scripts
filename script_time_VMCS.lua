@@ -32,7 +32,7 @@ seconds = string.sub(lastChangedVMCStatus, 18, 19)
 
 t2 = os.time { year = year, month = month, day = day, hour = hour, min = minutes, sec = seconds }
 difference = (os.difftime(currentTime, t2))
-
+print('VMC : last executed time : ' .. difference)
 if (otherdevices['VMC-ALL'] == 'Off' and difference > 21600) then
 
     -- on regarde si c est la nuit
