@@ -5,6 +5,7 @@
 --
 package.path = package.path .. ';' .. '/home/pi/domoticz/scripts/lua/?.lua'
 require("lib_conf")
+require("lib_vmc")
 
 --
 -- variables definition
@@ -24,6 +25,13 @@ VAR_HUMIDITY_REF = 'HUMIDITY_REF'
 
 commandArray = {}
 if (devicechanged[DEVICE_NAME]) then
+
+    runningMode = getVmcMode(tonumber(otherdevices_svalues['VMC-MODE']))
+    if (runningMode == "OFF" or runningMode == "MANUEL") then
+        --mode manuel, on ne fait rien
+        print('VMC SDB : VMC Mode OFF ou MANUEL ACTIVE. Do nothing')
+        return commandArray
+    end
 
     -- l'algo est le suivant
     -- si l'humidite est superieur a 70 et que le statut de la VMC est Off, on l'allume pour 30 minutes
