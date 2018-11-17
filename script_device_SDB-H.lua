@@ -45,7 +45,7 @@ if (devicechanged[DEVICE_NAME]) then
         commandArray['Group:VMCs'] = 'On FOR 30'
 
         -- send email
-        local emailAddress = uservariables['email_address']
+--        local emailAddress = uservariables['email_address']
 --        commandArray['SendEmail'] = '[DOMOTICZ] ALLUMAGE VMC#Allumage de la VMC#' .. emailAddress
     end
 end

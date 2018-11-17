@@ -1,5 +1,5 @@
 --
--- Ce script n'active rien. Il sert uniquemen a allumer les autres VMC quand une des VMC
+-- Ce script n'active rien. Il sert uniquement a allumer les autres VMC quand une des VMC
 -- est allumee (ou eteinte)
 --
 --
