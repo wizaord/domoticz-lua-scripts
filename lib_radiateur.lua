@@ -17,6 +17,8 @@ end
 function stopRadiateur(SERVEUR_LOGIN, SERVEUR_IP)
     --print('executing : ssh ' .. SERVEUR_LOGIN .. '@' .. SERVEUR_IP.. ' \'irsend SEND_ONCE HITACHIFORCE KEY_STOP\'')
     os.execute('ssh ' .. SERVEUR_LOGIN .. '@' .. SERVEUR_IP .. ' \'irsend SEND_ONCE HITACHIFORCE KEY_STOP\'')
+    os.execute("sleep 5")
+    os.execute('ssh ' .. SERVEUR_LOGIN .. '@' .. SERVEUR_IP .. ' \'irsend SEND_ONCE HITACHIFORCE KEY_STOP\'')
 end
 
 -- This function is used to change the temperature configured in the radiator.
