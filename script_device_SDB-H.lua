@@ -34,19 +34,24 @@ if (devicechanged[DEVICE_NAME]) then
     end
 
     -- l'algo est le suivant
-    -- si l'humidite est superieur a 70 et que le statut de la VMC est Off, on l'allume pour 30 minutes
+    -- si l'humidite est superieur a la valeur de réference + SEUIL
+    -- et que le statut de la VMC est Off, on l'allume pour 30 minutes
     sdbTemperature, sdbHumidity = otherdevices_svalues[DEVICE_NAME]:match("([^;]+);([^;]+)")
     vmcStatus = uservariables["VMC_STATUS"]
+    VMCLastEventTime = timeBetweenLastVMCEvent();
 
     seuilDeDeclenchement = uservariables[VAR_HUMIDITY_REF] + SEUIL
 
     if (vmcStatus == "Off" and tonumber(sdbHumidity) >= seuilDeDeclenchement) then
+        -- si le status de la VMC a changé il y a pas 10 minutes, on ne fait rien
+        -- c'est surement l'utilisateur qui a voulu la couper pour une raison
+        if (VMCLastEventTime < 600) then
+            print("La VMC a ete coupé il y a pas 10 minutes, on ne fait rien pour l'instant")
+            return commandArray
+        end
+
         print("Allumage de la VMC pour 30 minutes")
         commandArray['Group:VMCs'] = 'On FOR 30'
-
-        -- send email
---        local emailAddress = uservariables['email_address']
---        commandArray['SendEmail'] = '[DOMOTICZ] ALLUMAGE VMC#Allumage de la VMC#' .. emailAddress
     end
 end
 return commandArray

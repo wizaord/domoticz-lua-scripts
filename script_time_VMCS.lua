@@ -10,9 +10,6 @@ require("lib_vmc")
 
 commandArray = {}
 
-currentTime = os.time()
-currentDate = os.date("*t", currentTime)
-
 runningMode = getVmcMode(tonumber(otherdevices_svalues['VMC-MODE']))
 print('VMC : Mode de fonctionnement : ' .. runningMode);
 if (runningMode == "OFF" or runningMode == "MANUEL") then
@@ -31,19 +28,9 @@ if (isRadiateurCouloirRunning == 'On' or isRadiateurSalonRunning == 'On') then
     return commandArray;
 end
 
-lastChangedVMCStatus = otherdevices_lastupdate['VMC-ALL']
-
-year = string.sub(lastChangedVMCStatus, 1, 4)
-month = string.sub(lastChangedVMCStatus, 6, 7)
-day = string.sub(lastChangedVMCStatus, 9, 10)
-hour = string.sub(lastChangedVMCStatus, 12, 13)
-minutes = string.sub(lastChangedVMCStatus, 15, 16)
-seconds = string.sub(lastChangedVMCStatus, 18, 19)
-
-t2 = os.time { year = year, month = month, day = day, hour = hour, min = minutes, sec = seconds }
-difference = (os.difftime(currentTime, t2))
-print('VMC : last executed time : ' .. difference)
-if (otherdevices['VMC-ALL'] == 'Off' and difference > 21600) then
+VMCLastEventTime = timeBetweenLastVMCEvent();
+print('VMC : last executed time : ' .. VMCLastEventTime)
+if (otherdevices['VMC-ALL'] == 'Off' and VMCLastEventTime > 21600) then
 
     -- on regarde si c est la nuit
     if (isNigth(hour) == 1) then
