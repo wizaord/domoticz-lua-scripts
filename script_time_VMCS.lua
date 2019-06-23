@@ -35,7 +35,7 @@ if (otherdevices['VMC-ALL'] == 'Off' and VMCLastEventTime > 21600) then
     -- on regarde si c est la nuit
     if (isNigth(hour) == 1) then
         --on va verifier la temperature a l'exterieur
-        outTemperature, outHumidity = otherdevices_svalues["WU_Temp"]:match("([^;]+);([^;]+)")
+        outTemperature, outHumidity = otherdevices_svalues["DS_THB"]:match("([^;]+);([^;]+)")
         if (tonumber(outTemperature) > 5) then
             commandArray['Group:VMCs'] = 'On FOR 30'
         end
