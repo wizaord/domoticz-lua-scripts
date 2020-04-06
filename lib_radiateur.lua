@@ -8,16 +8,16 @@ end
 
 -- This function is used to start the radiator
 function startRadiateur(SERVEUR_LOGIN, SERVEUR_IP)
-    --print('demarrage du radiateur')
-    --print('Executing ' .. 'ssh ' .. SERVEUR_LOGIN .. '@' .. SERVEUR_IP .. ' \'irsend SEND_ONCE HITACHIFORCE BTN_START\'')
+--     print('demarrage du radiateur')
+--     print('Executing ' .. 'ssh ' .. SERVEUR_LOGIN .. '@' .. SERVEUR_IP .. ' \'irsend SEND_ONCE HITACHIFORCE BTN_START\'')
     os.execute('ssh ' .. SERVEUR_LOGIN .. '@' .. SERVEUR_IP .. ' \'irsend SEND_ONCE HITACHIFORCE BTN_START\'')
 end
 
 --This function is used to stop the radiator
 function stopRadiateur(SERVEUR_LOGIN, SERVEUR_IP)
-    --print('executing : ssh ' .. SERVEUR_LOGIN .. '@' .. SERVEUR_IP.. ' \'irsend SEND_ONCE HITACHIFORCE KEY_STOP\'')
+--     print('executing : ssh ' .. SERVEUR_LOGIN .. '@' .. SERVEUR_IP.. ' \'irsend SEND_ONCE HITACHIFORCE KEY_STOP\'')
     os.execute('ssh ' .. SERVEUR_LOGIN .. '@' .. SERVEUR_IP .. ' \'irsend SEND_ONCE HITACHIFORCE KEY_STOP\'')
-    os.execute("sleep 5")
+    sleep(5)
     os.execute('ssh ' .. SERVEUR_LOGIN .. '@' .. SERVEUR_IP .. ' \'irsend SEND_ONCE HITACHIFORCE KEY_STOP\'')
 end
 

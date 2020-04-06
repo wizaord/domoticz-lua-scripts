@@ -23,7 +23,7 @@ end
 isRadiateurCouloirRunning = otherdevices['RADIATEUR-COULOIR']
 isRadiateurSalonRunning = otherdevices['RADIATEUR-SALON']
 if (isRadiateurCouloirRunning == 'On' or isRadiateurSalonRunning == 'On') then
-    -- on coupe le radiateur
+    -- On ne lance pas la VMC si un des radiateur tourne
     print('VMC: Non demarrage de la VMC car un des radiateurs fonctionne');
     return commandArray;
 end
