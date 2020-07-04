@@ -15,6 +15,15 @@ function getVmcMode(SELECTEUR_VALUE)
     end
 end
 
+function startVmc()
+    switchSonoffUrl="http://" .. SONOFF_VMC_IP ..":8081/zeroconf/switch"
+    os.execute('/usr/bin/curl -H "Content-Type: application/json" -X POST -d \'{"deviceId":"1000aa2bcb", "data":{"switch":"on"} }\' ' .. switchSonoffUrl)
+end
+
+function stopVmc()
+    switchSonoffUrl="http://" .. SONOFF_VMC_IP ..":8081/zeroconf/switch"
+    os.execute('/usr/bin/curl -H "Content-Type: application/json" -X POST -d \'{"deviceId":"1000aa2bcb", "data":{"switch":"off"} }\' ' .. switchSonoffUrl)
+end
 
 -- Cette fonction retourne 1 si l heure passe en parametre fait partie de la nuit
 function isNigth(hour)

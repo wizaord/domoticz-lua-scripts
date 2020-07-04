@@ -5,7 +5,9 @@
 --
 --
 --
-
+package.path = package.path .. ';' .. '/home/pi/domoticz/scripts/lua/?.lua'
+require("lib_conf")
+require("lib_vmc")
 
 --
 -- variables definition
@@ -58,8 +60,17 @@ if (isDeviceHasChanged()) then
 	then
 
 		-- get the value
-		print ('device change ' .. deviceWithNewValue .. 'with value ' .. status)
+		print ('device change ' .. deviceWithNewValue .. ' with value ' .. status)
 		commandArray['Variable:VMC_STATUS']=status
+
+		-- allumage de la VMC
+		if (status == 'On') then
+			startVmc()
+		else
+			stopVmc()
+		end
+
+		-- changement des autres 'vmc'
 		for k,v in pairs(LST_VMC)
         	do
 			print ('Changement de status <' .. status .. '> pour le device <' .. v .. '>')
