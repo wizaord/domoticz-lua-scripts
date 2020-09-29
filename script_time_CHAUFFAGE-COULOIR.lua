@@ -1,5 +1,5 @@
 --
--- Ce script est lance toutes les minutes. Il gere le chauffage dans la maison en fonction de la temperature choisi et de la temperature en cours 
+-- Ce script est lance toutes les minutes. Il gere le chauffage dans la maison en fonction de la temperature choisie et de la temperature en cours
 --
 
 package.path = package.path .. ';' .. '/home/pi/domoticz/scripts/lua/?.lua'
@@ -47,7 +47,7 @@ if (runningMode == "AUTO") then
 end
 
 -- Recuperation de la temperature du salon
-temperatureCouloir = tonumber(otherdevices_svalues['TH-CHAMBREMATHIS']:match("([^;]+);.*"))
+temperatureCouloir = tonumber(otherdevices_svalues['TH-CHAMBREETHAN']:match("([^;]+);.*"))
 -- on regarde si le radiateur est eteint ou non
 isRadiateurRunning = otherdevices['RADIATEUR-COULOIR']
 
