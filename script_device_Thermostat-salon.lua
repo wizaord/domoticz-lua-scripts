@@ -32,7 +32,7 @@ if (devicechanged[DEVICE_NAME]) then
     newTemp = math.floor(tonumber(devicechanged[DEVICE_NAME]))
 
     -- on recupere la temperature du salon
-    salonTemp = tonumber(otherdevices_svalues['TH-SALON']:match("([^;]+);.*"))
+    salonTemp = tonumber(otherdevices['TH-SALON'])
 
     -- on recupere la dernere temperature envoye
     lastTempSend = tonumber(uservariables['RADIATEUR-SALON-LASTSEND'])

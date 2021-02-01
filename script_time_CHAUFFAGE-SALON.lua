@@ -49,7 +49,7 @@ end
 
 
 -- Recuperation de la temperature du salon
-temperatureSalon = tonumber(otherdevices_svalues['TH-SALON']:match("([^;]+);.*"))
+temperatureSalon = tonumber(otherdevices['TH-SALON'])
 -- on regarde si le radiateur est eteint ou non
 isRadiateurRunning = otherdevices['RADIATEUR-SALON']
 
