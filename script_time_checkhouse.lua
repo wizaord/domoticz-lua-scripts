@@ -4,7 +4,7 @@
 -- Une notification est envoyé si jamais il y a un souci.
 --
 package.path = package.path .. ';' .. '/home/pi/domoticz/scripts/lua/?.lua'
-require("lib_conf")
+require("lib_door")
 
 
 currentTime = os.time()
@@ -13,7 +13,7 @@ currentDate = os.date("*t", currentTime)
 function checkAndNotifIfDoorIsOpened(PORTE_NAME)
     deviceDoorStatus = otherdevices[PORTE_NAME]
     print("Door status with name " .. PORTE_NAME .. " has value " .. deviceDoorStatus)
-    if deviceDoorStatus ~= "Closed" then
+    if isDoorOpened(PORTE_NAME) then
         commandArray['SendNotification']='Porte ' .. PORTE_NAME .. '#Ouverte#0###pushbullet'
     end
 end

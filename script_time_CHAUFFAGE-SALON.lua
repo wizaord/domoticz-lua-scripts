@@ -5,6 +5,7 @@
 package.path = package.path .. ';' .. '/home/pi/domoticz/scripts/lua/?.lua'
 require("lib_radiateur")
 require("lib_conf")
+require("lib_door")
 
 --
 -- FUNCTION
@@ -15,6 +16,12 @@ require("lib_conf")
 --
 
 commandArray = {}
+
+if isDoorOpened("Porte Salon")
+        or isDoorOpened("Porte Cuisine") then
+    print('SALON : Le chauffage ne démarre pas si une porte est ouverte')
+    return commandArray
+end
 
 runningMode = getRadiatorMode(tonumber(otherdevices_svalues['RADIATEUR-MODE']))
 print('SALON : Mode de fonctionnement : ' .. runningMode);
