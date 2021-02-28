@@ -6,10 +6,7 @@ package.path = package.path .. ';' .. '/home/pi/domoticz/scripts/lua/?.lua'
 require("lib_radiateur")
 require("lib_conf")
 
-currentTime = os.time()
-currentDate = os.date("*t", currentTime)
-
--- 
+--
 -- FUNCTION
 --
 
@@ -47,7 +44,7 @@ if (runningMode == "AUTO") then
 end
 
 -- Recuperation de la temperature du salon
-temperatureCouloir = tonumber(otherdevices_svalues['TH-CHAMBREETHAN']:match("([^;]+);.*"))
+temperatureSalon = tonumber(otherdevices['TH-CHAMBREETHAN'])
 -- on regarde si le radiateur est eteint ou non
 isRadiateurRunning = otherdevices['RADIATEUR-COULOIR']
 
@@ -66,7 +63,7 @@ end
 if ( temperatureCouloir <= temperatureVoulue and isRadiateurRunning == 'Off') then
 	--on redemarre le radiateura la temperature voulu
     changeTemperature('RADIATEUR-COULOIR', PI_COULOIR_SERVEUR_LOGIN, PI_COULOIR_SERVEUR_IP, temperatureVoulue + 2)
-    commandArray['Variable:RADIATEUR-COULOIR-LASTSEND'] = ''..temperatureVoulue
+    commandArray['Variable:RADIATEUR-COULOIR-LASTSEND'] = '' .. temperatureVoulue
     commandArray['Variable:RADIATEUR-COULOIR-STATUS'] = 'On'
     commandArray['RADIATEUR-COULOIR'] = 'On'
 end

@@ -8,10 +8,10 @@ require("lib_conf")
 --
 -- variables definition
 --
-DEVICE_NAME = 'Thermostat-SALON'
+THERMOSTAT_NAME = 'Thermostat-SALON'
 
 commandArray = {}
-if (devicechanged[DEVICE_NAME]) then
+if (devicechanged[THERMOSTAT_NAME]) then
     --on regarde si le radiateur n'est pas en mode manuel
     runningMode = getRadiatorMode(tonumber(otherdevices_svalues['RADIATEUR-MODE']))
     print('THERMOSTAT SALON : Mode de fonctionnement : ' .. runningMode);
@@ -21,6 +21,7 @@ if (devicechanged[DEVICE_NAME]) then
         return commandArray
     end
 
+    -- si c'est le weekend ou mode forcé, on ne realise aucune action
     if (runningMode == "WEEKEND_OFF") then
         if (isWeekendOffMode()) then
             print('Mode WEEKEND . Do nothing')
@@ -28,13 +29,13 @@ if (devicechanged[DEVICE_NAME]) then
         end
     end
 
-    --on determine si on allume ou on eteint le radiateur
-    newTemp = math.floor(tonumber(devicechanged[DEVICE_NAME]))
+    -- on recupere la temperature du thermostat
+    newTemp = math.floor(tonumber(devicechanged[THERMOSTAT_NAME]))
 
     -- on recupere la temperature du salon
     salonTemp = tonumber(otherdevices['TH-SALON'])
 
-    -- on recupere la dernere temperature envoye
+    -- on recupere la derniere temperature envoye
     lastTempSend = tonumber(uservariables['RADIATEUR-SALON-LASTSEND'])
 
     -- on regarde si le radiateur est eteint ou non

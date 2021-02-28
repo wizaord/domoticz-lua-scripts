@@ -6,11 +6,7 @@ package.path = package.path .. ';' .. '/home/pi/domoticz/scripts/lua/?.lua'
 require("lib_radiateur")
 require("lib_conf")
 
-local currentTime = os.time()
-local currentDate = os.date("*t", currentTime)
-local currentDay = os.date("*t").wday;
-
--- 
+--
 -- FUNCTION
 --
 

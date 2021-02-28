@@ -8,10 +8,10 @@ require("lib_conf")
 --
 -- variables definition
 --
-DEVICE_NAME = 'Thermostat-COULOIR'
+THERMOSTAT_NAME = 'Thermostat-COULOIR'
 
 commandArray = {}
-if (devicechanged[DEVICE_NAME]) then
+if (devicechanged[THERMOSTAT_NAME]) then
     -- on regarde si le radiateur n'est pas en mode manuel
     runningMode = getRadiatorMode(tonumber(otherdevices_svalues['RADIATEUR-MODE']))
     print('THERMOSTAT COULOIR : Mode de fonctionnement : ' .. runningMode);
@@ -30,10 +30,10 @@ if (devicechanged[DEVICE_NAME]) then
     end
 
     -- on recupere la temperature du thermostat
-    newTemp = math.floor(tonumber(devicechanged[DEVICE_NAME]))
+    newTemp = math.floor(tonumber(devicechanged[THERMOSTAT_NAME]))
 
     -- on recupere la temperature du salon
-    couloirTemp = tonumber(otherdevices_svalues['TH-CHAMBREMATHIS']:match("([^;]+);.*"))
+    couloirTemp = tonumber(otherdevices['TH-CHAMBREETHAN'])
 
     -- on recupere la derniere temperature envoye
     lastTempSend = tonumber(uservariables['RADIATEUR-COULOIR-LASTSEND'])
