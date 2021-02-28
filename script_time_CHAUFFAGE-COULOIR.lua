@@ -44,7 +44,7 @@ if (runningMode == "AUTO") then
 end
 
 -- Recuperation de la temperature du salon
-temperatureSalon = tonumber(otherdevices['TH-CHAMBREETHAN'])
+temperatureCouloir = tonumber(otherdevices['TH-CHAMBREETHAN'])
 -- on regarde si le radiateur est eteint ou non
 isRadiateurRunning = otherdevices['RADIATEUR-COULOIR']
 
