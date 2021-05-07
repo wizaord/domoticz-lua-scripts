@@ -18,7 +18,7 @@ if (currentDate.hour == 5 and currentDate.min == 10) then
     print("Save the current humidity as reference for the next week")
 
     --get the humidity value from SDB humidity sensor
-    sdbHumidity = otherdevices["HU-SALLEDEBAIN"]
+    sdbTemperature, sdbHumidity = otherdevices_svalues["TH-SALLEDEBAIN"]:match("([^;]+);([^;]+)")
     if (sdbHumidity == nil or sdbHumidity == '') then
         local emailAddress = uservariables['email_address']
         commandArray['SendEmail'] = '[DOMOTICZ] HUMIDITY REF#Erreur de recuperation. Set default value a 50#' .. emailAddress
