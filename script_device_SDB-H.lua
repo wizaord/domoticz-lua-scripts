@@ -10,7 +10,6 @@ require("lib_vmc")
 --
 -- variables definition
 --
-DEVICE_NAME = 'TH-SALLEDEBAIN'
 SEUIL = 10
 
 VAR_HUMIDITY_REF = 'HUMIDITY_REF'
@@ -24,7 +23,7 @@ VAR_HUMIDITY_REF = 'HUMIDITY_REF'
 
 
 commandArray = {}
-if (devicechanged[DEVICE_NAME]) then
+if (devicechanged['HU-SALLEDEBAIN']) then
 
     runningMode = getVmcMode(tonumber(otherdevices_svalues['VMC-MODE']))
     if (runningMode == "OFF" or runningMode == "MANUEL") then
@@ -36,7 +35,9 @@ if (devicechanged[DEVICE_NAME]) then
     -- l'algo est le suivant
     -- si l'humidite est superieur a la valeur de réference + SEUIL
     -- et que le statut de la VMC est Off, on l'allume pour 30 minutes
-    sdbTemperature, sdbHumidity = otherdevices_svalues[DEVICE_NAME]:match("([^;]+);([^;]+)")
+    sdbTemperature = tonumber(otherdevices['TH-SALLEDEBAIN'])
+    sdbHumidity = tonumber(otherdevices['HU-SALLEDEBAIN'])
+
     vmcStatus = uservariables["VMC_STATUS"]
     VMCLastEventTime = timeBetweenLastVMCEvent();
 
