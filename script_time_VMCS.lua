@@ -30,13 +30,14 @@ end
 
 VMCLastEventTime = timeBetweenLastVMCEvent();
 print('VMC : last executed time : ' .. VMCLastEventTime)
+print('VMC-ALL status : : ' .. otherdevices['VMC-ALL'])
 if (otherdevices['VMC-ALL'] == 'Off' and VMCLastEventTime > 21600) then
-
+    print('VMC : starting VMC')
     -- on regarde si c est la nuit
-    if (isNigth(hour) == 1) then
+    if (isNigth() == 1) then
         --on va verifier la temperature a l'exterieur
         outTemperature, outHumidity = otherdevices_svalues["DS_THB"]:match("([^;]+);([^;]+)")
-        if (tonumber(outTemperature) > 5) then
+        if (tonumber(outTemperature) > 0) then
             commandArray['Group:VMCs'] = 'On FOR 30'
         end
     else

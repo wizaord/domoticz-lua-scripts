@@ -25,8 +25,9 @@ function stopVmc()
     os.execute('/usr/bin/curl -H "Content-Type: application/json" -X POST -d \'{"deviceId":"1000aa2bcb", "data":{"switch":"off"} }\' ' .. switchSonoffUrl)
 end
 
--- Cette fonction retourne 1 si l heure passe en parametre fait partie de la nuit
+-- Cette fonction retourne 1 si l heure courante fait partie de la nuit
 function isNigth(hour)
+    hour = os.date("%H")
     intHour = tonumber(hour)
     print('hour ' .. intHour)
     if (intHour < 10 or intHour > 21) then
