@@ -51,8 +51,8 @@ if (devicechanged['HU-SALLEDEBAIN']) then
             return commandArray
         end
 
-        print("Allumage de la VMC pour 30 minutes")
-        commandArray['Group:VMCs'] = 'On FOR 30'
+        print("Allumage de la VMC pour 45 minutes")
+        commandArray['Group:VMCs'] = 'On FOR 45'
     end
 end
 return commandArray
