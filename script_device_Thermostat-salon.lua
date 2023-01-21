@@ -65,14 +65,14 @@ if (devicechanged[THERMOSTAT_NAME]) then
             -- radiateur is stopped
             if (newTemp > salonTemp) then
                 changeTemperature('RADIATEUR-SALON', PI_SALON_SERVEUR_LOGIN, PI_SALON_SERVEUR_IP, newTemp + 1)
-                commandArray['Variable:RADIATEUR-SALON-LASTSEND'] = '' .. newTemp
+                commandArray['Variable:RADIATEUR-SALON-LASTSEND'] = '' .. math.floor(newTemp)
                 commandArray['Variable:RADIATEUR-SALON-STATUS'] = 'On'
                 commandArray['RADIATEUR-SALON'] = 'On'
             end
         else
             -- radiateur is running
             changeTemperature('RADIATEUR-SALON', PI_SALON_SERVEUR_LOGIN, PI_SALON_SERVEUR_IP, newTemp + 1)
-            commandArray['Variable:RADIATEUR-SALON-LASTSEND'] = '' .. newTemp
+            commandArray['Variable:RADIATEUR-SALON-LASTSEND'] = '' .. math.floor(newTemp)
         end
     end
 end

@@ -65,14 +65,14 @@ if (devicechanged[THERMOSTAT_NAME]) then
             -- radiateur is stopped
             if (newTemp > couloirTemp) then
                 changeTemperature('RADIATEUR-COULOIR', PI_COULOIR_SERVEUR_LOGIN, PI_COULOIR_SERVEUR_IP, newTemp + 2)
-                commandArray['Variable:RADIATEUR-COULOIR-LASTSEND'] = '' .. newTemp
+                commandArray['Variable:RADIATEUR-COULOIR-LASTSEND'] = '' .. math.floor(newTemp)
                 commandArray['Variable:RADIATEUR-COULOIR-STATUS'] = 'On'
                 commandArray['RADIATEUR-COULOIR'] = 'On'
             end
         else
             -- radiateur is running
             changeTemperature('RADIATEUR-COULOIR', PI_COULOIR_SERVEUR_LOGIN, PI_COULOIR_SERVEUR_IP, newTemp + 2)
-            commandArray['Variable:RADIATEUR-COULOIR-LASTSEND'] = '' .. newTemp
+            commandArray['Variable:RADIATEUR-COULOIR-LASTSEND'] = '' .. math.floor(newTemp)
         end
     end
 end

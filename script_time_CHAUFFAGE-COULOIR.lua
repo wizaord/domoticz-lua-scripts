@@ -17,12 +17,6 @@ require("lib_door")
 
 commandArray = {}
 
-if isDoorOpened("Porte Salon")
-    or isDoorOpened("Porte Cuisine") then
-    print('COULOIR : Le chauffage ne démarre pas si une porte est ouverte')
-    return commandArray
-end
-
 runningMode = getRadiatorMode(tonumber(otherdevices_svalues['RADIATEUR-MODE']))
 print('COULOIR : Mode de fonctionnement : ' .. runningMode);
 if (runningMode == "OFF" or runningMode == "MANUEL") then
@@ -70,7 +64,7 @@ end
 if ( temperatureCouloir <= temperatureVoulue and isRadiateurRunning == 'Off') then
 	--on redemarre le radiateura la temperature voulu
     changeTemperature('RADIATEUR-COULOIR', PI_COULOIR_SERVEUR_LOGIN, PI_COULOIR_SERVEUR_IP, temperatureVoulue + 2)
-    commandArray['Variable:RADIATEUR-COULOIR-LASTSEND'] = '' .. temperatureVoulue
+    commandArray['Variable:RADIATEUR-COULOIR-LASTSEND'] = '' .. math.floor(temperatureVoulue)
     commandArray['Variable:RADIATEUR-COULOIR-STATUS'] = 'On'
     commandArray['RADIATEUR-COULOIR'] = 'On'
 end
