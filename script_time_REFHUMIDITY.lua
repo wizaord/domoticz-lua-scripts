@@ -8,14 +8,13 @@
 package.path = package.path .. ';' .. '/home/pi/domoticz/scripts/lua/?.lua'
 require("lib_conf")
 
-
 currentTime = os.time()
 currentDate = os.date("*t", currentTime)
 
 commandArray = {}
 
 if (currentDate.hour == 5 and currentDate.min == 10) then
-    print("Save the current humidity as reference for the next week")
+    print("Save the current humidity as reference for the next day")
 
     --get the humidity value from SDB humidity sensor
     sdbHumidity = tonumber(otherdevices['HU-SALLEDEBAIN'])
@@ -24,7 +23,7 @@ if (currentDate.hour == 5 and currentDate.min == 10) then
         commandArray['SendEmail'] = '[DOMOTICZ] HUMIDITY REF#Erreur de recuperation. Set default value a 50#' .. emailAddress
         sdbHumidity = 50
     end
-    commandArray['Variable:HUMIDITY_REF'] = sdbHumidity
+    commandArray['Variable:HUMIDITY_REF'] = '' .. math.floor(sdbHumidity)
 end
 
 return commandArray
