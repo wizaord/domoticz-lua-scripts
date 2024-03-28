@@ -18,11 +18,25 @@ require("lib_door")
 commandArray = {}
 
 runningMode = getRadiatorMode(tonumber(otherdevices_svalues['RADIATEUR-MODE']))
+isTempoMode = otherdevices['EDF-TEMPO-MODE']
 print('COULOIR : Mode de fonctionnement : ' .. runningMode);
+print('MODE TEMPO : ' .. isTempoMode);
 if (runningMode == "OFF" or runningMode == "MANUEL") then
     --mode manuel, on ne fait rien
     print('Radiateur : Mode OFF ou MANUEL ACTIVE. Do nothing')
     return commandArray
+end
+
+if (isTempoMode == "On") then
+    currentTime = os.time()
+    currentDate = os.date("*t", currentTime)
+    -- if time is between 6h00 and 22h00, force the temperature to 16
+    if (currentDate.hour > 6 and currentDate.hour < 22) then
+        print("COULOIR : TEMPO MODE - En heures pleines - Coupure du chauffage - FORCE 16")
+        runningMode = "FORCE16"
+    else
+        print("COULOIR : TEMPO MODE - En heures creuse - On ne change pas le mode de fonctionnement")
+    end
 end
 
 temperatureVoulue = tonumber('16');
