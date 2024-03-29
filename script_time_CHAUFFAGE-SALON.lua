@@ -31,7 +31,7 @@ if (isTempoMode == "On") then
     currentTime = os.time()
     currentDate = os.date("*t", currentTime)
     -- if time is between 6h00 and 22h00, force the temperature to 16
-    if (currentDate.hour > 6 and currentDate.hour < 22) then
+    if (currentDate.hour >= 6 and currentDate.hour < 22) then
         print("SALON : TEMPO MODE - En heures pleines - Coupure du chauffage - FORCE 16")
         runningMode = "FORCE16"
     else
