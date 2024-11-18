@@ -15,6 +15,17 @@ function getVmcMode(SELECTEUR_VALUE)
     end
 end
 
+
+function isVmcIsTurnOff()
+    vmcStatus = uservariables["VMC_STATUS"]
+    if (vmcStatus == "Off") then
+        print("Check if VMC is off : VMC is off")
+        return true
+    end
+    print("Check if VMC is off : VMC is on")
+    return false
+end
+
 function startVmc()
     switchSonoffUrl="http://" .. SONOFF_VMC_IP ..":8081/zeroconf/switch"
     os.execute('/usr/bin/curl -H "Content-Type: application/json" -X POST -d \'{"deviceId":"1000aa2bcb", "data":{"switch":"on"} }\' ' .. switchSonoffUrl)

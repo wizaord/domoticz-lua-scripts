@@ -72,7 +72,7 @@ if (isDeviceHasChanged()) then
 
 		-- changement des autres 'vmc'
 		for k,v in pairs(LST_VMC)
-        	do
+		do
 			print ('Changement de status <' .. status .. '> pour le device <' .. v .. '>')
 			commandArray[v]=status
 		end

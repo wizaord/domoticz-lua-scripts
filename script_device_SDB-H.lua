@@ -17,10 +17,21 @@ VAR_HUMIDITY_REF = 'HUMIDITY_REF'
 -- 
 -- FUNCTIONS
 --
+function isHumiditySuperiorTo70()
+    sdbHumidity = tonumber(otherdevices['HU-SALLEDEBAIN'])
+    print('VMC SDB : Check if humidity is superior to 70 : ' .. sdbHumidity)
+    return sdbHumidity >= 70
+end
+
+function isHumiditySuperiorToRef()
+    sdbHumidity = tonumber(otherdevices['HU-SALLEDEBAIN'])
+    seuilDeDeclenchement = tonumber(uservariables[VAR_HUMIDITY_REF]) + tonumber(SEUIL)
+    print('VMC SDB : Check if humidity is superior to reference : ' .. sdbHumidity)
+    return sdbHumidity >= seuilDeDeclenchement
+end
 
 -- MAIN FUNCTION
 --
-
 
 commandArray = {}
 if (devicechanged['HU-SALLEDEBAIN']) then
@@ -35,19 +46,13 @@ if (devicechanged['HU-SALLEDEBAIN']) then
     -- l'algo est le suivant
     -- si l'humidite est superieur a la valeur de réference + SEUIL
     -- et que le statut de la VMC est Off, on l'allume pour 30 minutes
-    sdbTemperature = tonumber(otherdevices['TH-SALLEDEBAIN'])
-    sdbHumidity = tonumber(otherdevices['HU-SALLEDEBAIN'])
-
-    vmcStatus = uservariables["VMC_STATUS"]
     VMCLastEventTime = timeBetweenLastVMCEvent();
 
-    seuilDeDeclenchement = uservariables[VAR_HUMIDITY_REF] + SEUIL
-
-    if (vmcStatus == "Off" and tonumber(sdbHumidity) >= seuilDeDeclenchement) then
-        -- si le status de la VMC a changé il y a pas 10 minutes, on ne fait rien
+    if (isVmcIsTurnOff() and (isHumiditySuperiorToRef() or isHumiditySuperiorTo70())) then
+        -- si le status de la VMC a changé il y a pas 5 minutes, on ne fait rien
         -- c'est surement l'utilisateur qui a voulu la couper pour une raison
-        if (VMCLastEventTime < 600) then
-            print("La VMC a ete coupé il y a pas 10 minutes, on ne fait rien pour l'instant")
+        if (VMCLastEventTime < 300) then
+            print("La VMC a ete coupé il y a pas 5 minutes, on ne fait rien pour l'instant")
             return commandArray
         end
 

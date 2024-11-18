@@ -1,7 +1,7 @@
 --
 -- Ce script est lance toutes les minutes. Il va verifier si la VMC
--- est coupee depuis plus de 6h. Si oui la VMC est lancee pendant
--- 30 minutes
+-- est coupee depuis plus de 4h. Si oui la VMC est lancee pendant
+-- 45 minutes
 -- La VMC n est pas allumee la nuit pour garder la chaleur
 --
 
@@ -31,18 +31,18 @@ end
 VMCLastEventTime = timeBetweenLastVMCEvent();
 print('VMC : last executed time : ' .. VMCLastEventTime)
 print('VMC-ALL status : : ' .. otherdevices['VMC-ALL'])
-if (otherdevices['VMC-ALL'] == 'Off' and VMCLastEventTime > 21600) then
+if (otherdevices['VMC-ALL'] == 'Off' and VMCLastEventTime > 14400) then
     print('VMC : starting VMC')
     -- on regarde si c est la nuit
     if (isNigth() == 1) then
         --on va verifier la temperature a l'exterieur
         outTemperature, outHumidity = otherdevices_svalues["DS_THB"]:match("([^;]+);([^;]+)")
         if (tonumber(outTemperature) > 0) then
-            commandArray['Group:VMCs'] = 'On FOR 30'
+            commandArray['Group:VMCs'] = 'On FOR 45'
         end
     else
-        print("Allumage de la VMC car eteinte depuis 6h")
-        commandArray['Group:VMCs'] = 'On FOR 30'
+        print("Allumage de la VMC car eteinte depuis 4h")
+        commandArray['Group:VMCs'] = 'On FOR 45'
     end
 end
 
