@@ -3,7 +3,7 @@
 -- Ce script permet d'allumer la VMC quand le taux d'humidite est superieur de 10 au taux de reference
 --
 --
-package.path = package.path .. ';' .. '/home/pi/domoticz/scripts/lua/?.lua'
+package.path = package.path .. ';' .. '/home/wizaord/domoticz/scripts/lua/?.lua'
 require("lib_conf")
 require("lib_vmc")
 
@@ -19,8 +19,8 @@ VAR_HUMIDITY_REF = 'HUMIDITY_REF'
 --
 function isHumiditySuperiorTo70()
     sdbHumidity = tonumber(otherdevices['HU-SALLEDEBAIN'])
-    print('VMC SDB : Check if humidity is superior to 70 : ' .. sdbHumidity)
-    return sdbHumidity >= 70
+    print('VMC SDB : Check if humidity is superior to 65 : ' .. sdbHumidity)
+    return sdbHumidity >= 65
 end
 
 function isHumiditySuperiorToRef()

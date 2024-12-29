@@ -1,7 +1,7 @@
 --
 -- Ce script permet de realiser les changements de temperature en fonction de ce qui est programme dans  le thermostat
 --
-package.path = package.path .. ';' .. '/home/pi/domoticz/scripts/lua/?.lua'
+package.path = package.path .. ';' .. '/home/wizaord/domoticz/scripts/lua/?.lua'
 require("lib_radiateur")
 require("lib_conf")
 

@@ -5,7 +5,7 @@
 --
 --
 --
-package.path = package.path .. ';' .. '/home/pi/domoticz/scripts/lua/?.lua'
+package.path = package.path .. ';' .. '/home/wizaord/domoticz/scripts/lua/?.lua'
 require("lib_conf")
 require("lib_vmc")
 

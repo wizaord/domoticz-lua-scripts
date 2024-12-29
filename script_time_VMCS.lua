@@ -5,7 +5,7 @@
 -- La VMC n est pas allumee la nuit pour garder la chaleur
 --
 
-package.path = package.path .. ';' .. '/home/pi/domoticz/scripts/lua/?.lua'
+package.path = package.path .. ';' .. '/home/wizaord/domoticz/scripts/lua/?.lua'
 require("lib_vmc")
 
 commandArray = {}

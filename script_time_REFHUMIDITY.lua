@@ -5,7 +5,7 @@
 -- Ce taux de reference est utilise pour detecter si quelqu'un a pris un douche ou non
 -- En effet le taux d'humidite varie en fonction de l'annee. Ce script permet de palier a cette fluctuation.
 --
-package.path = package.path .. ';' .. '/home/pi/domoticz/scripts/lua/?.lua'
+package.path = package.path .. ';' .. '/home/wizaord/domoticz/scripts/lua/?.lua'
 require("lib_conf")
 
 currentTime = os.time()

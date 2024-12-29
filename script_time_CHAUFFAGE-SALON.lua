@@ -2,10 +2,10 @@
 -- Ce script est lance toutes les minutes. Il gere le chauffage dans la maison en fonction de la temperature choisie et de la temperature en cours
 --
 
-package.path = package.path .. ';' .. '/home/pi/domoticz/scripts/lua/?.lua'
+package.path = package.path .. ';' .. '/home/wizaord/domoticz/scripts/lua/?.lua'
 require("lib_radiateur")
 require("lib_conf")
-require("lib_door")
+require("lib_edf_tempo")
 
 --
 -- FUNCTION
@@ -18,16 +18,14 @@ require("lib_door")
 commandArray = {}
 
 runningMode = getRadiatorMode(tonumber(otherdevices_svalues['RADIATEUR-MODE']))
-isTempoMode = otherdevices['EDF-TEMPO-MODE']
 print('SALON : Mode de fonctionnement : ' .. runningMode);
-print('MODE TEMPO : ' .. isTempoMode);
 if (runningMode == "OFF" or runningMode == "MANUEL") then
     --mode manuel, on ne fait rien
-    print('Radiateur : Mode OFF ou MANUEL ACTIVE. Do nothing')
+    print('SALON : Radiateur : Mode OFF ou MANUEL ACTIVE. Do nothing')
     return commandArray
 end
 
-if (isTempoMode == "On") then
+if (isEdfTempoRedDay("SALON")) then
     currentTime = os.time()
     currentDate = os.date("*t", currentTime)
     -- if time is between 6h00 and 22h00, force the temperature to 16
