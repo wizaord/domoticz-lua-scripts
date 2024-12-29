@@ -1,9 +1,7 @@
 --
--- Ce script va s'executer la nuit a 5h30
--- Ce script va aller rechercher le taux d'humidite dans la Salle de bain
--- Ce taux d'humidite va alors devenir le taux de reference pour la journee
--- Ce taux de reference est utilise pour detecter si quelqu'un a pris un douche ou non
--- En effet le taux d'humidite varie en fonction de l'annee. Ce script permet de palier a cette fluctuation.
+-- Ce script va s'executer toutes les heures
+-- Il appelle l'API d'EDF pour recuperer la couleur du jour TEMPO
+-- Il met ensuite à jour le switch TEMPO_DAY avec la couleur du jour
 --
 package.path = package.path .. ';' .. '/home/wizaord/domoticz/scripts/lua/?.lua'
 require("lib_conf")
