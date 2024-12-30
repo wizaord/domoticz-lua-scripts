@@ -20,9 +20,9 @@ function isTimeToCallTuya()
 end
 
 function extractValueFromTuyaResponse(jsonData, code)
-    for _, status in ipairs(jsonData.result[1].status) do
-        if status.code == code then
-            return tonumber(status.value)
+    for _, property in ipairs(jsonData.result.properties) do
+        if property.code == code then
+            return tonumber(property.value)
         end
     end
     return nil
@@ -43,14 +43,16 @@ if (isTimeToCallTuya()) then
         print("Error:", err)
     else
         -- Extract the cur_current value
-        local cur_current = extractValueFromTuyaResponse(jsonData, "cur_current")
-        local cur_voltage = extractValueFromTuyaResponse(jsonData, "cur_voltage")
-        local cur_power = extractValueFromTuyaResponse(jsonData, "cur_power")
-        print("PANNEAUX : cur_power:" .. cur_power)
-        print("PANNEAUX : cur_voltage:" .. cur_voltage)
-        print("PANNEAUX : cur_current:" .. cur_current)
+        local out_power_in_watt = extractValueFromTuyaResponse(jsonData, "out_power") / 100
+        local energy_in_kwh = extractValueFromTuyaResponse(jsonData, "energy")
+        local temperature = extractValueFromTuyaResponse(jsonData, "temperature") / 10
+        print("PANNEAUX : out_power_in_watt:" .. out_power_in_watt)
+        print("PANNEAUX : energy_in_kwh:" .. energy_in_kwh)
         local panneauSolaireId = 40
-        commandArray[1] = {['UpdateDevice'] = panneauSolaireId .. "|0|" .. cur_current}
+        commandArray[1] = {['UpdateDevice'] = panneauSolaireId .. "|0|" .. out_power_in_watt}
+        commandArray[2] = {['UpdateDevice'] = 42 .. "|0|" .. out_power_in_watt .. ";" .. energy_in_kwh}
+        local panneauSolaireTemperatureId = 41
+        commandArray[3] = {['UpdateDevice'] = panneauSolaireTemperatureId .. "|0|" .. temperature}
     end
 end
 

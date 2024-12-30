@@ -33,7 +33,7 @@ function getTuyaAccessToken() {
 # Get the values for a specific device
 function getTuyaDeviceJsonResponse() {
   access_token=$(getTuyaAccessToken)
-  URL="/v1.0/iot-03/devices/status?device_ids=${DeviceId}"
+  URL="/v2.0/cloud/thing/${DeviceId}/shadow/properties"
   RequestSign=$(signTuyaCall "$URL" "$access_token")
   RequestResponse=$(curl -sSLkX GET "$BaseUrl$URL" -H "sign_method: HMAC-SHA256" -H "client_id: $ClientID" -H "t: $tuyatime"  -H "mode: cors" -H "Content-Type: application/json" -H "sign: $RequestSign" -H "access_token: $access_token")
   echo "${RequestResponse}"
