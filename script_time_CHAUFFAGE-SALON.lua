@@ -25,7 +25,7 @@ if (isEdfTempoRedDay("SALON")) then
     currentDate = os.date("*t", currentTime)
     -- if time is between 6h00 and 22h00, force the temperature to 16
     if (currentDate.hour >= 6 and currentDate.hour < 22) then
-        print("SALON : TEMPO MODE - En heures pleines - Coupure du chauffage - FORCE 16")
+        print("SALON : TEMPO MODE - En heures pleines - Coupure du chauffage - HORSGEL")
         runningMode = "HORSGEL"
     else
         print("SALON : TEMPO MODE - En heures creuse - On ne change pas le mode de fonctionnement")
