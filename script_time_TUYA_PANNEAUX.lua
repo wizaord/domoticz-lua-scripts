@@ -48,11 +48,10 @@ if (isTimeToCallTuya()) then
         local temperature = extractValueFromTuyaResponse(jsonData, "temperature") / 10
         print("PANNEAUX : out_power_in_watt:" .. out_power_in_watt)
         print("PANNEAUX : energy_in_kwh:" .. energy_in_kwh)
-        local panneauSolaireId = 40
-        commandArray[1] = {['UpdateDevice'] = panneauSolaireId .. "|0|" .. out_power_in_watt}
-        commandArray[2] = {['UpdateDevice'] = 42 .. "|0|" .. out_power_in_watt .. ";" .. energy_in_kwh}
+        local panneauSolaireId = 42
+        commandArray[1] = {['UpdateDevice'] = panneauSolaireId .. "|0|" .. out_power_in_watt .. ";" .. energy_in_kwh}
         local panneauSolaireTemperatureId = 41
-        commandArray[3] = {['UpdateDevice'] = panneauSolaireTemperatureId .. "|0|" .. temperature}
+        commandArray[2] = {['UpdateDevice'] = panneauSolaireTemperatureId .. "|0|" .. temperature}
     end
 end
 
