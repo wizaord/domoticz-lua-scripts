@@ -13,7 +13,8 @@ currentDate = os.date("*t", currentTime)
 commandArray = {}
 
 function isTimeToCheckTempo()
-    return currentDate.min == 00
+    return true
+    --return currentDate.min == 00
 end
 
 function mapTempoColorToSwitchSelector(tempoColor)

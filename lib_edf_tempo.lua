@@ -49,6 +49,12 @@ function getAuthBearerToken()
     return response_json["access_token"]
 end
 
+function getPreviousDayForEDFTempo()
+    currentTime = os.time()
+    currentDate = os.date("*t", currentTime)
+    return os.date("%Y-%m-%dT00:00:00+01:00", os.time{year=currentDate.year, month=currentDate.month, day=currentDate.day-1})
+end
+
 function getCurrentDayForEDFTempo()
     currentTime = os.time()
     currentDate = os.date("*t", currentTime)
@@ -68,7 +74,10 @@ function getNextNextDayForEDFTempo()
 end
 
 function getCurrentColorDay()
-    local url = url_edf_open_api .. "tempo_like_supply_contract/v1/tempo_like_calendars?start_date=" .. getCurrentDayForEDFTempo() .. "&end_date=" .. getNextDayForEDFTempo()
+    local yesterdayDate = getPreviousDayForEDFTempo()
+    local tomorrowDate = getNextDayForEDFTempo()
+
+    local url = url_edf_open_api .. "tempo_like_supply_contract/v1/tempo_like_calendars?start_date=" .. yesterdayDate .. "&end_date=" .. tomorrowDate
     local bearerToken = "Bearer " .. getAuthBearerToken()
     local response_body = {}
     local res, code = http.request{
@@ -82,7 +91,8 @@ function getCurrentColorDay()
     }
 
     if code ~= 200 then
-        print("Error lors de l'appel de l'API TEMPO:", err)
+        print("Error lors de l'appel de l'API TEMPO : code:" .. code)
+        print("url was : " .. url)
         return nil
     end
     local response_str = table.concat(response_body)
