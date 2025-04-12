@@ -44,7 +44,7 @@ if (isTimeToCallTuya()) then
     else
         -- Extract the cur_current value
         local out_power_in_watt = extractValueFromTuyaResponse(jsonData, "out_power") / 100
-        local energy_in_kwh = extractValueFromTuyaResponse(jsonData, "energy")
+        local energy_in_kwh = extractValueFromTuyaResponse(jsonData, "energy") * 10
         local temperature = extractValueFromTuyaResponse(jsonData, "temperature") / 10
         print("PANNEAUX : out_power_in_watt:" .. out_power_in_watt)
         print("PANNEAUX : energy_in_kwh:" .. energy_in_kwh)
