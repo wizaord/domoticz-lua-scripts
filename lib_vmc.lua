@@ -63,6 +63,5 @@ function timeBetweenLastVMCEvent()
 
     t2 = os.time { year = year, month = month, day = day, hour = hour, min = minutes, sec = seconds }
     difference = (os.difftime(currentTime, t2))
-    print('VMC last event time : ' .. difference)
     return difference;
 end

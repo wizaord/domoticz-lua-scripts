@@ -29,21 +29,21 @@ if (isRadiateurCouloirRunning == 'On' or isRadiateurSalonRunning == 'On') then
 end
 
 VMCLastEventTime = timeBetweenLastVMCEvent();
-print('VMC : last executed time : ' .. VMCLastEventTime)
+print('VMC : last executed time : ' .. VMCLastEventTime .. ' seconds ago')
 print('VMC-ALL status : : ' .. otherdevices['VMC-ALL'])
 if (otherdevices['VMC-ALL'] == 'Off' and VMCLastEventTime > 14400) then
-    print('VMC : starting VMC')
+    print('VMC : starting VMC. Last event was > at 14400 seconds ago (4h)')
     -- on regarde si c est la nuit
     if (isNigth() == 1) then
         --on va verifier la temperature a l'exterieur
         outTemperature, outHumidity = otherdevices_svalues["DS_THB"]:match("([^;]+);([^;]+)")
-        if (tonumber(outTemperature) > 0) then
-            commandArray['Group:VMCs'] = 'On FOR 45'
+        if (tonumber(outTemperature) < 0) then
+            print("La VMC n'est pas allumee la nuit car la temperature exterieure est negative")
+            return commandArray;
         end
-    else
-        print("Allumage de la VMC car eteinte depuis 4h")
-        commandArray['Group:VMCs'] = 'On FOR 45'
     end
+    print("Allumage de la VMC car eteinte depuis 4h")
+    commandArray['Group:VMCs'] = 'On FOR 45'
 end
 
 return commandArray

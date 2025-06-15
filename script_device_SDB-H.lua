@@ -11,7 +11,6 @@ require("lib_vmc")
 -- variables definition
 --
 SEUIL = 10
-
 VAR_HUMIDITY_REF = 'HUMIDITY_REF'
 
 -- 
@@ -19,8 +18,8 @@ VAR_HUMIDITY_REF = 'HUMIDITY_REF'
 --
 function isHumiditySuperiorTo70()
     sdbHumidity = tonumber(otherdevices['HU-SALLEDEBAIN'])
-    print('VMC SDB : Check if humidity is superior to 65 : ' .. sdbHumidity)
-    return sdbHumidity >= 65
+    print('VMC SDB : Check if humidity is superior to 70 : ' .. sdbHumidity)
+    return sdbHumidity >= 70
 end
 
 function isHumiditySuperiorToRef()

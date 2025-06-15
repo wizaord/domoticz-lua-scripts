@@ -23,6 +23,7 @@ if (currentDate.hour == 5 and currentDate.min == 10) then
         commandArray['SendEmail'] = '[DOMOTICZ] HUMIDITY REF#Erreur de recuperation. Set default value a 50#' .. emailAddress
         sdbHumidity = 50
     end
+    print("reference humidity value is " .. math.floor(sdbHumidity))
     commandArray['Variable:HUMIDITY_REF'] = '' .. math.floor(sdbHumidity)
 end
 

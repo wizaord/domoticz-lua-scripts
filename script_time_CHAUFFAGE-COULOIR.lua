@@ -21,6 +21,12 @@ commandArray = {}
 runningMode = getRadiatorMode(tonumber(otherdevices_svalues['RADIATEUR-MODE']))
 print('COULOIR : Mode de fonctionnement : ' .. runningMode);
 
+if (runningMode == "OFF" or runningMode == "MANUEL") then
+    --mode manuel, on ne fait rien
+    print('COULOIR : Radiateur : Mode OFF ou MANUEL ACTIVE. Do nothing')
+    return commandArray
+end
+
 if (isEdfTempoRedDay("COULOIR")) then
     currentTime = os.time()
     currentDate = os.date("*t", currentTime)
@@ -31,12 +37,6 @@ if (isEdfTempoRedDay("COULOIR")) then
     else
         print("COULOIR : TEMPO MODE - En heures creuse - On ne change pas le mode de fonctionnement")
     end
-end
-
-if (runningMode == "OFF" or runningMode == "MANUEL") then
-    --mode manuel, on ne fait rien
-    print('COULOIR : Radiateur : Mode OFF ou MANUEL ACTIVE. Do nothing')
-    return commandArray
 end
 
 temperatureVoulue = tonumber('16');
