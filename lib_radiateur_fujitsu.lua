@@ -47,7 +47,7 @@ function getFujitsuTemperature(ip)
     local handle = io.popen(fujitsuCmd(ip) .. ' status 2>&1')
     local output = handle:read('*a')
     handle:close()
-    local temp = output:match('Temp%. int.r%.%s*:%s*([%d%.]+)')
+    local temp = output:match('Temp%. int..r%.%s*:%s*([%d%.]+)')
     if temp then
         print('[FUJITSU-PAC] Temperature interieure : ' .. temp .. '°C')
         return tonumber(temp)
