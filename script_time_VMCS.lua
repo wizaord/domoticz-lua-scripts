@@ -18,16 +18,6 @@ if (runningMode == "OFF" or runningMode == "MANUEL") then
     return commandArray
 end
 
-
--- Si le radiateur est actif, on ne lance pas la VMC pour moins gaspiller
-isRadiateurCouloirRunning = otherdevices['RADIATEUR-COULOIR']
-isRadiateurSalonRunning = otherdevices['RADIATEUR-SALON']
-if (isRadiateurCouloirRunning == 'On' or isRadiateurSalonRunning == 'On') then
-    -- On ne lance pas la VMC si un des radiateur tourne
-    print('VMC: Non demarrage de la VMC car un des radiateurs fonctionne');
-    return commandArray;
-end
-
 VMCLastEventTime = timeBetweenLastVMCEvent();
 print('VMC : last executed time : ' .. VMCLastEventTime .. ' seconds ago')
 print('VMC-ALL status : : ' .. otherdevices['VMC-ALL'])

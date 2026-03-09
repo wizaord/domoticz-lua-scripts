@@ -19,8 +19,6 @@ if (currentDate.hour == 5 and currentDate.min == 10) then
     --get the humidity value from SDB humidity sensor
     sdbHumidity = tonumber(otherdevices['HU-SALLEDEBAIN'])
     if (sdbHumidity == nil or sdbHumidity == '') then
-        local emailAddress = uservariables['email_address']
-        commandArray['SendEmail'] = '[DOMOTICZ] HUMIDITY REF#Erreur de recuperation. Set default value a 50#' .. emailAddress
         sdbHumidity = 50
     end
     print("reference humidity value is " .. math.floor(sdbHumidity))
