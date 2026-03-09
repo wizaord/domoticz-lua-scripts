@@ -3,8 +3,6 @@
 --
 package.path = package.path .. ';' .. '/home/wizaord/domoticz/scripts/lua/?.lua'
 require("lib_radiateur")
-require("lib_conf")
-
 --
 -- variables definition
 --
@@ -64,14 +62,14 @@ if (devicechanged[THERMOSTAT_NAME]) then
         if (isRadiateurRunning == "Off") then
             -- radiateur is stopped
             if (newTemp > salonTemp) then
-                changeTemperature('RADIATEUR-SALON', PI_SALON_SERVEUR_LOGIN, PI_SALON_SERVEUR_IP, newTemp + 1)
+                -- TODO : brancher sur le thermostat Fujitsu du salon
                 commandArray['Variable:RADIATEUR-SALON-LASTSEND'] = '' .. math.floor(newTemp)
                 commandArray['Variable:RADIATEUR-SALON-STATUS'] = 'On'
                 commandArray['RADIATEUR-SALON'] = 'On'
             end
         else
             -- radiateur is running
-            changeTemperature('RADIATEUR-SALON', PI_SALON_SERVEUR_LOGIN, PI_SALON_SERVEUR_IP, newTemp + 1)
+            -- TODO : brancher sur le thermostat Fujitsu du salon
             commandArray['Variable:RADIATEUR-SALON-LASTSEND'] = '' .. math.floor(newTemp)
         end
     end

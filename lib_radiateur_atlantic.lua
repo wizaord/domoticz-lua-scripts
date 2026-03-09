@@ -43,6 +43,23 @@ function stopAtlanticPac(deviceUrl)
     print('[ATLANTIC-PAC] Commande OFF envoyee')
 end
 
+-- Recupere la temperature courante mesuree par la PAC.
+-- Retourne la temperature (nombre) ou nil en cas d'erreur.
+function getAtlanticTemperature(deviceUrl)
+    print('[ATLANTIC-PAC] Recuperation de la temperature courante (' .. deviceUrl .. ')...')
+    local cmd = atlanticCmd() .. ' status --device ' .. deviceUrl
+    local handle = io.popen(cmd .. ' 2>&1')
+    local output = handle:read('*a')
+    handle:close()
+    local temp = output:match('Current%s*:%s*([%d%.]+)')
+    if temp then
+        print('[ATLANTIC-PAC] Temperature courante : ' .. temp .. '°C')
+        return tonumber(temp)
+    end
+    print('[ATLANTIC-PAC] Impossible de parser la temperature courante')
+    return nil
+end
+
 -- Fonction generique pour les scripts device.
 -- Verifie si le device a change, compare avec le statut reel de la PAC,
 -- et envoie la commande uniquement si necessaire.

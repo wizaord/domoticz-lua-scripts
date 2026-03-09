@@ -39,3 +39,40 @@ function stopFujitsuPac(ip)
     os.execute(fujitsuCmd(ip) .. ' off')
     print('[FUJITSU-PAC] Commande OFF envoyee')
 end
+
+-- Recupere la temperature interieure mesuree par la PAC.
+-- Retourne la temperature (nombre) ou nil en cas d'erreur.
+function getFujitsuTemperature(ip)
+    print('[FUJITSU-PAC] Recuperation de la temperature interieure (' .. ip .. ')...')
+    local handle = io.popen(fujitsuCmd(ip) .. ' status 2>&1')
+    local output = handle:read('*a')
+    handle:close()
+    local temp = output:match('Temp%. int.r%.%s*:%s*([%d%.]+)')
+    if temp then
+        print('[FUJITSU-PAC] Temperature interieure : ' .. temp .. '°C')
+        return tonumber(temp)
+    end
+    print('[FUJITSU-PAC] Impossible de parser la temperature interieure')
+    return nil
+end
+
+-- Fonction generique pour les scripts device.
+-- Verifie si le device a change, compare avec le statut reel de la PAC,
+-- et envoie la commande uniquement si necessaire.
+function handleFujitsuRadiateur(deviceName, ip)
+    if (devicechanged[deviceName]) then
+        local newStatus = devicechanged[deviceName]
+        print('[' .. deviceName .. '] Changement demande : ' .. newStatus)
+        local currentStatus = getFujitsuPacStatus(ip)
+        if (newStatus == currentStatus) then
+            print('[' .. deviceName .. '] Statut identique (' .. currentStatus .. '), aucune action necessaire')
+        else
+            print('[' .. deviceName .. '] Changement de statut : ' .. currentStatus .. ' --> ' .. newStatus)
+            if (newStatus == 'On') then
+                startFujitsuPac(ip)
+            else
+                stopFujitsuPac(ip)
+            end
+        end
+    end
+end

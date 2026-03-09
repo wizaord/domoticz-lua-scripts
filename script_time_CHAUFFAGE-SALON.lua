@@ -5,13 +5,11 @@
 package.path = package.path .. ';' .. '/home/wizaord/domoticz/scripts/lua/?.lua'
 require("lib_radiateur")
 require("lib_conf")
-require("lib_edf_tempo")
-
 --
 -- FUNCTION
 --
 
--- 
+--
 -- MAIN
 --
 
@@ -24,18 +22,6 @@ if (runningMode == "OFF" or runningMode == "MANUEL") then
     --mode manuel, on ne fait rien
     print('SALON : Radiateur : Mode OFF ou MANUEL ACTIVE. Do nothing')
     return commandArray
-end
-
-if (isEdfTempoRedDay("SALON")) then
-    currentTime = os.time()
-    currentDate = os.date("*t", currentTime)
-    -- if time is between 6h00 and 22h00, force the temperature to 16
-    if (currentDate.hour >= 6 and currentDate.hour < 22) then
-        print("SALON : TEMPO MODE - En heures pleines - Coupure du chauffage - HORSGEL")
-        runningMode = "HORSGEL"
-    else
-        print("SALON : TEMPO MODE - En heures creuse - On ne change pas le mode de fonctionnement")
-    end
 end
 
 temperatureVoulue = tonumber('16');
@@ -75,7 +61,7 @@ end
 
 if (temperatureSalon <= temperatureVoulue and isRadiateurRunning == 'Off') then
     --on redemarre le radiateura la temperature voulu
-    changeTemperature('RADIATEUR-SALON', PI_SALON_SERVEUR_LOGIN, PI_SALON_SERVEUR_IP, temperatureVoulue + 1)
+    -- TODO : brancher sur le thermostat Fujitsu du salon
     commandArray['Variable:RADIATEUR-SALON-LASTSEND'] = '' .. math.floor(temperatureVoulue)
     commandArray['Variable:RADIATEUR-SALON-STATUS'] = 'On'
     commandArray['RADIATEUR-SALON'] = 'On'
