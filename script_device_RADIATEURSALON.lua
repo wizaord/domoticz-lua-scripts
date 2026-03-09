@@ -1,10 +1,11 @@
 --
 -- Ce script permet d'allumer ou de couper le radiateur du salon.
--- Il faut passer par le RPI pour ealiser l'action
+-- Il utilise le JAR fujitsu-heat-pump-cli pour piloter la PAC Fujitsu
+-- via l'adaptateur WiFi AirStage (UTY-TFSXH3) en local, sans cloud.
 --
 package.path = package.path .. ';' .. '/home/wizaord/domoticz/scripts/lua/?.lua'
 require("lib_conf")
-require("lib_radiateur")
+require("lib_radiateur_fujitsu")
 
 --
 -- variables definition
@@ -13,21 +14,21 @@ DEVICE_NAME = 'RADIATEUR-SALON'
 
 commandArray = {}
 if (devicechanged[DEVICE_NAME]) then
-    -- on recupere le status courant. Le radiateur peut etre eteint par le thermostat
-    currentRadiateurStatus = uservariables['RADIATEUR-SALON-STATUS']
-
-    --on determine si on allume ou on eteint le radiateur
+    -- on determine si on allume ou on eteint le radiateur
     newRadiateurStatus = devicechanged[DEVICE_NAME]
+    print('[RADIATEUR-SALON] Changement demande : ' .. newRadiateurStatus)
 
-    if (newRadiateurStatus == currentRadiateurStatus) then
-        print('Le status est le meme, on ne fait rien')
+    -- on recupere le status courant directement depuis la PAC
+    currentPacStatus = getFujitsuPacStatus(FUJITSU_PAC_SALON_IP)
+
+    if (newRadiateurStatus == currentPacStatus) then
+        print('[RADIATEUR-SALON] Statut identique (' .. currentPacStatus .. '), aucune action necessaire')
     else
+        print('[RADIATEUR-SALON] Changement de statut : ' .. currentPacStatus .. ' --> ' .. newRadiateurStatus)
         if (newRadiateurStatus == 'On') then
-            startRadiateur(PI_SALON_SERVEUR_LOGIN, PI_SALON_SERVEUR_IP)
-            commandArray['Variable:RADIATEUR-SALON-STATUS'] = 'On'
+            startFujitsuPac(FUJITSU_PAC_SALON_IP)
         else
-            stopRadiateur(PI_SALON_SERVEUR_LOGIN, PI_SALON_SERVEUR_IP)
-            commandArray['Variable:RADIATEUR-SALON-STATUS'] = 'Off'
+            stopFujitsuPac(FUJITSU_PAC_SALON_IP)
         end
     end
 end

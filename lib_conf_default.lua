@@ -14,6 +14,11 @@ PI_SALON_SERVEUR_LOGIN = TO_BE_DEFINED
 
 SONOFF_VMC_IP = TO_BE_DEFINED
 
+-- PAC FUJITSU SALON (adaptateur WiFi AirStage UTY-TFSXH3)
+-- Telecharger le JAR depuis : https://github.com/wizaord/fujitsu-heat-pump-cli/releases/latest/download/fujitsu-heat-pump-cli.jar
+FUJITSU_PAC_SALON_IP = TO_BE_DEFINED
+FUJITSU_JAR_PATH = TO_BE_DEFINED
+
 -- TOKEN D'ACCESS AUX APIS EDF
 EDF_TEMPO_TOKEN = TO_BE_DEFINED
 
