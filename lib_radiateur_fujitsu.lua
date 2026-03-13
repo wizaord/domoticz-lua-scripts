@@ -10,6 +10,35 @@ local function fujitsuCmd(ip)
     return 'java -jar ' .. FUJITSU_JAR_PATH .. ' --ip ' .. ip
 end
 
+-- Recupere en un seul appel JAR le statut complet de la PAC.
+-- Retourne une table { status='On'/'Off', targetTemp=<nombre|nil>, currentTemp=<nombre|nil> }
+function getFujitsuFullStatus(ip)
+    print('[FUJITSU-PAC] Recuperation du statut complet (' .. ip .. ')...')
+    local handle = io.popen(fujitsuCmd(ip) .. ' status 2>&1')
+    local output = handle:read('*a')
+    handle:close()
+    print('[FUJITSU-PAC] Reponse status JAR : ' .. output)
+
+    local result = {}
+
+    if output:match('Alimentation%s*:%s*ON') then
+        result.status = 'On'
+    else
+        result.status = 'Off'
+    end
+
+    local target = output:match('Temp%. cible%s*:%s*([%d%.]+)')
+    result.targetTemp = target and tonumber(target) or nil
+
+    local current = output:match('Temp%. int..r%.%s*:%s*([%d%.]+)')
+    result.currentTemp = current and tonumber(current) or nil
+
+    print('[FUJITSU-PAC] Statut : ' .. result.status
+        .. ' | Consigne : ' .. tostring(result.targetTemp) .. '°C'
+        .. ' | Courante : ' .. tostring(result.currentTemp) .. '°C')
+    return result
+end
+
 -- Recupere le statut courant de la PAC.
 -- Retourne 'On' ou 'Off'
 function getFujitsuPacStatus(ip)
@@ -38,22 +67,6 @@ function stopFujitsuPac(ip)
     print('[FUJITSU-PAC] Envoi commande OFF (' .. ip .. ')...')
     os.execute(fujitsuCmd(ip) .. ' off')
     print('[FUJITSU-PAC] Commande OFF envoyee')
-end
-
--- Recupere la temperature interieure mesuree par la PAC.
--- Retourne la temperature (nombre) ou nil en cas d'erreur.
-function getFujitsuTemperature(ip)
-    print('[FUJITSU-PAC] Recuperation de la temperature interieure (' .. ip .. ')...')
-    local handle = io.popen(fujitsuCmd(ip) .. ' status 2>&1')
-    local output = handle:read('*a')
-    handle:close()
-    local temp = output:match('Temp%. int..r%.%s*:%s*([%d%.]+)')
-    if temp then
-        print('[FUJITSU-PAC] Temperature interieure : ' .. temp .. '°C')
-        return tonumber(temp)
-    end
-    print('[FUJITSU-PAC] Impossible de parser la temperature interieure')
-    return nil
 end
 
 -- Fonction generique pour les scripts device.

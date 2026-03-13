@@ -43,21 +43,34 @@ function stopAtlanticPac(deviceUrl)
     print('[ATLANTIC-PAC] Commande OFF envoyee')
 end
 
--- Recupere la temperature courante mesuree par la PAC.
--- Retourne la temperature (nombre) ou nil en cas d'erreur.
-function getAtlanticTemperature(deviceUrl)
-    print('[ATLANTIC-PAC] Recuperation de la temperature courante (' .. deviceUrl .. ')...')
+-- Recupere en un seul appel JAR le statut complet de la PAC.
+-- Retourne une table { status='On'/'Off', targetTemp=<nombre|nil>, currentTemp=<nombre|nil> }
+function getAtlanticFullStatus(deviceUrl)
+    print('[ATLANTIC-PAC] Recuperation du statut complet (' .. deviceUrl .. ')...')
     local cmd = atlanticCmd() .. ' status --device ' .. deviceUrl
     local handle = io.popen(cmd .. ' 2>&1')
     local output = handle:read('*a')
     handle:close()
-    local temp = output:match('Current%s*:%s*([%d%.]+)')
-    if temp then
-        print('[ATLANTIC-PAC] Temperature courante : ' .. temp .. '°C')
-        return tonumber(temp)
+    print('[ATLANTIC-PAC] Reponse status JAR : ' .. output)
+
+    local result = {}
+
+    if output:match('Power%s*:%s*ON') then
+        result.status = 'On'
+    else
+        result.status = 'Off'
     end
-    print('[ATLANTIC-PAC] Impossible de parser la temperature courante')
-    return nil
+
+    local target = output:match('Target%s*:%s*([%d%.]+)')
+    result.targetTemp = target and tonumber(target) or nil
+
+    local current = output:match('Current%s*:%s*([%d%.]+)')
+    result.currentTemp = current and tonumber(current) or nil
+
+    print('[ATLANTIC-PAC] Statut : ' .. result.status
+        .. ' | Consigne : ' .. tostring(result.targetTemp) .. '°C'
+        .. ' | Courante : ' .. tostring(result.currentTemp) .. '°C')
+    return result
 end
 
 -- Fonction generique pour les scripts device.
