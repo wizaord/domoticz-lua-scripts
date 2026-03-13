@@ -33,7 +33,8 @@ local function syncStatus(deviceName, pacStatus)
 end
 
 -- Synchronise la temperature de consigne d'un thermostat Domoticz avec celle de la PAC.
-local function syncThermostat(deviceName, targetTemp)
+-- deviceIdx : IDX numerique Domoticz du device Setpoint (requis pour UpdateDevice)
+local function syncThermostat(deviceName, deviceIdx, targetTemp)
     if targetTemp == nil then
         print('[MAJ-PAC] ' .. deviceName .. ' : temperature de consigne non disponible, pas de mise a jour')
         return
@@ -45,7 +46,7 @@ local function syncThermostat(deviceName, targetTemp)
         print('[MAJ-PAC] Consignes coherentes, aucune mise a jour necessaire')
     else
         print('[MAJ-PAC] Desynchronisation detectee, mise a jour : ' .. tostring(currentTemp) .. ' --> ' .. targetTemp .. '°C')
-        commandArray[deviceName] = tostring(targetTemp)
+        commandArray[#commandArray + 1] = {['UpdateDevice'] = deviceIdx .. '|0|' .. targetTemp}
     end
 end
 
@@ -53,25 +54,25 @@ if slot == 0 then
     print('[MAJ-PAC] Mise a jour SALON (Fujitsu)')
     local pac = getFujitsuFullStatus(FUJITSU_PAC_SALON_IP)
     syncStatus('RADIATEUR-SALON', pac.status)
-    syncThermostat('THERMOSTAT-SALON', pac.targetTemp)
+    syncThermostat('THERMOSTAT-SALON', THERMOSTAT_SALON_IDX, pac.targetTemp)
 
 elseif slot == 5 then
     print('[MAJ-PAC] Mise a jour CHAMBRE-PARENTS (Atlantic)')
     local pac = getAtlanticFullStatus(ATLANTIC_DEVICE_URL_CHAMBRE_PARENTS)
     syncStatus('RADIATEUR-CHAMBRE-PARENTS', pac.status)
-    syncThermostat('THERMOSTAT-CHAMBRE-PARENTS', pac.targetTemp)
+    syncThermostat('THERMOSTAT-CHAMBRE-PARENTS', THERMOSTAT_CHAMBRE_PARENTS_IDX, pac.targetTemp)
 
 elseif slot == 10 then
     print('[MAJ-PAC] Mise a jour CHAMBRE-ETHAN (Atlantic)')
     local pac = getAtlanticFullStatus(ATLANTIC_DEVICE_URL_CHAMBRE_ETHAN)
     syncStatus('RADIATEUR-CHAMBRE-ETHAN', pac.status)
-    syncThermostat('THERMOSTAT-CHAMBRE-ETHAN', pac.targetTemp)
+    syncThermostat('THERMOSTAT-CHAMBRE-ETHAN', THERMOSTAT_CHAMBRE_ETHAN_IDX, pac.targetTemp)
 
 elseif slot == 15 then
     print('[MAJ-PAC] Mise a jour CHAMBRE-MATHIS (Atlantic)')
     local pac = getAtlanticFullStatus(ATLANTIC_DEVICE_URL_CHAMBRE_MATHIS)
     syncStatus('RADIATEUR-CHAMBRE-MATHIS', pac.status)
-    syncThermostat('THERMOSTAT-CHAMBRE-MATHIS', pac.targetTemp)
+    syncThermostat('THERMOSTAT-CHAMBRE-MATHIS', THERMOSTAT_CHAMBRE_MATHIS_IDX, pac.targetTemp)
 end
 
 return commandArray
